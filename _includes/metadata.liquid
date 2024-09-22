@@ -185,7 +185,7 @@
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.spotify_id %}
-    {% capture link %}https://open.spotify.com/user/{{ site.spotify_id }}{% endcapture %}
+    {% capture link %}https://open.spotify.com/show/{{ site.spotify_id }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.pinterest_id %}
