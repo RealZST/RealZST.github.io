@@ -9,13 +9,13 @@ profile:
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <a href="mailto:sitongzoe@gmail.com" title="email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="mailto:sitongzoe@gmail.com" title="email"><i class="fa-solid fa-envelope fa-2x"></i></a>
     <a href="/assets/pdf/cv.pdf"><i class="ai ai-cv-square ai-2x"></i></a>
-    <a href="https://www.linkedin.com/in/sitong-zhang-303687286/"><i class="fa-brands fa-linkedin"></i></a>
-    <a href="https://scholar.google.com/citations?user=Fv1FPy0AAAAJ"><i class="ai ai-google-scholar"></i></a>
-    <a href="https://github.com/RealZST"><i class="fa-brands fa-github"></i></a>
-    <a href="https://open.spotify.com/show/3qE8BBidWyMPxwTXpmIDPp"><i class="fa-brands fa-spotify"></i></a>
-    <a href="https://youtube.com/@stz9551" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    <a href="https://www.linkedin.com/in/sitong-zhang-303687286/"><i class="fa-brands fa-linkedin fa-2x"></i></a>
+    <a href="https://scholar.google.com/citations?user=Fv1FPy0AAAAJ"><i class="ai ai-google-scholar ai-2x"></i></a>
+    <a href="https://github.com/RealZST"><i class="fa-brands fa-github fa-2x"></i></a>
+    <a href="https://open.spotify.com/show/3qE8BBidWyMPxwTXpmIDPp"><i class="fa-brands fa-spotify fa-2x"></i></a>
+    <a href="https://youtube.com/@stz9551" title="YouTube"><i class="fa-brands fa-youtube fs-2x"></i></a>
     
 
 Work_Experience: true # includes a list of news items
