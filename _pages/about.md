@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Address. Contacts. Motto. Etc.
+subtitle: Address: Espoo, Finland.
 
 profile:
   align: right
