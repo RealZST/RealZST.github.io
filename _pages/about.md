@@ -15,12 +15,12 @@ profile:
     <a href="https://scholar.google.com/citations?user=Fv1FPy0AAAAJ"><i class="ai ai-google-scholar ai-2x"></i></a>
     <a href="https://github.com/RealZST"><i class="fa-brands fa-github fa-2x"></i></a>
     <a href="https://open.spotify.com/show/3qE8BBidWyMPxwTXpmIDPp"><i class="fa-brands fa-spotify fa-2x"></i></a>
-    <a href="https://youtube.com/@stz9551" title="YouTube"><i class="fa-brands fa-youtube fs-2x"></i></a>
+    <a href="https://youtube.com/@stz9551" title="YouTube"><i class="fa-brands fa-youtube fa-2x"></i></a>
     
 
 work_experience: true # includes a list of news items
 education: true
-selected_pulication: true # includes a list of papers marked as "selected={true}"
+selected_pulications: true # includes a list of papers marked as "selected={true}"
 awards: true
 social: false # includes social icons at the bottom of the page
 ---
