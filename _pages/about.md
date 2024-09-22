@@ -33,3 +33,5 @@ During my time as a postdoctoral fellow, I developed a CNN-self-attention-based 
 
 Before that, I received my PhD degree (Jan. 2024) and Bachelor's degree (Jun. 2018) from Harbin Engineering University. 
 My doctoral research focused on the development of advanced Deep Reinforcement Learning (DRL) algorithms to enhance autonomous navigation in complex and dynamic environments, with a particular emphasis on optimizing real-time obstacle avoidance and long-distance trajectory planning for Unmanned Aerial Vehicles (UAVs). 
+
+My passion lies in bridging the gap between state-of-the-art AI research and real-world applications, leveraging cutting-edge technologies to create innovative, impactful solutions that address practical challenges and drive advancements across diverse industries.
