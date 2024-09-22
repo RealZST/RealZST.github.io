@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: sitongzoe [at] gmail [dot] com &#124; Espoo, Finland.
+subtitle: Espoo, Finland.
 
 profile:
   align: right
