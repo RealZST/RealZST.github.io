@@ -26,7 +26,7 @@ social: false # includes social icons at the bottom of the page
 ---
 
 
-Hi! I am Sitong Zhang, a researcher with **over six years of experience specializing in Deep Learning (DL) and Deep Reinforcement Learning (DRL)**. I recently relocated to *Espoo, Finland*, for family reasons and am actively exploring new opportunities. **Feel free to reach out directly if you think I could be a good fit!**
+Hi! I am Sitong Zhang, a researcher with **over six years of experience** specializing in **Deep Learning (DL)** and **Deep Reinforcement Learning (DRL)**. I recently relocated to *Espoo, Finland*, for family reasons and am actively exploring new opportunities. **Feel free to reach out directly if you think I could be a good fit!**
 
 Previously, I was a **postdoctoral fellow** at the [Centre for Intelligent Multidimensional Data Analysis (CIMDA) Limited](https://www.innocimda.com/index.html) (Hong Kong), supervised by [Prof. Hong Yan](https://www.ee.cityu.edu.hk/~hpyan/). 
 During my time as a postdoctoral fellow, I developed a CNN-self-attention-based algorithm for indoor positioning and worked with cross-functional teams to create an **AI-powered Android app** that provides **real-time multi-floor user location visualization**, improving indoor navigation efficiency. 
