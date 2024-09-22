@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Espoo, Finland.
+subtitle: Espoo, Finland
 
 profile:
   align: right
