@@ -18,10 +18,10 @@ profile:
     <a href="https://youtube.com/@stz9551" title="YouTube"><i class="fa-brands fa-youtube fs-2x"></i></a>
     
 
-Work_Experience: true # includes a list of news items
-Education: true
-Selected_Pulication: true # includes a list of papers marked as "selected={true}"
-Awards: true
+work_experience: true # includes a list of news items
+education: true
+selected_pulication: true # includes a list of papers marked as "selected={true}"
+awards: true
 social: false # includes social icons at the bottom of the page
 ---
 
