@@ -20,7 +20,7 @@ profile:
 
 work_experience: true # includes a list of news items
 education: true
-selected_pulications: true # includes a list of papers marked as "selected={true}"
+selected_papers: true # includes a list of papers marked as "selected={true}"
 awards: true
 social: false # includes social icons at the bottom of the page
 ---
