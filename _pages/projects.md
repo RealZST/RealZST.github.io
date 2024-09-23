@@ -3,8 +3,9 @@ layout: page
 title: projects
 permalink: /projects/
 description: A growing collection of your cool projects.
-nav: true
+nav: false
 nav_order: 3
+published: false # 添加这行代码来防止页面通过URL访问
 display_categories: [work, fun]
 horizontal: false
 ---
