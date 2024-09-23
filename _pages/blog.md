@@ -2,8 +2,9 @@
 layout: default
 permalink: /blog/
 title: blog
-nav: true
+nav: false
 nav_order: 1
+published: false # 添加这行代码来防止页面通过URL访问
 pagination:
   enabled: true
   collection: posts
