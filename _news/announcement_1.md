@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I've completed my PhD at Harbin Engineering University.
+I obtained my PhD at Harbin Engineering University.
