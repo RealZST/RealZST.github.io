@@ -361,6 +361,7 @@ filtered_bibtex_keywords:
     code,
     google_scholar_id,
     html,
+    podcast,
     inspirehep_id,
     pdf,
     poster,
