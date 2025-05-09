@@ -20,7 +20,7 @@ social: false # includes social icons at the bottom of the page
 ---
 
 
-Hi! I am Sitong Zhang (张思桐), now a postdoctoral researcher at the Department of Computer Science, Aalto, supervised by [Prof. Bo Zhao](https://zbjob.github.io/). 
+Hi! I am Sitong Zhang (张思桐), now a postdoctoral researcher at the Department of Computer Science, Aalto University, supervised by [Prof. Bo Zhao](https://zbjob.github.io/). 
 
 <!-- a researcher with **over six years of experience** specializing in **Deep Learning (DL)** and **Deep Reinforcement Learning (DRL)**. -->
 
@@ -30,7 +30,7 @@ Previously, I was a postdoctoral researcher at the CityU-Oxford Joint Centre for
 
 <!-- During my time as a postdoctoral fellow, I developed a CNN-self-attention-based algorithm for indoor positioning and worked with cross-functional teams to create an **AI-integrated Android app** ([demo video](https://youtu.be/-vnb9UGy3qE?si=u0UfoA5vNOybk84e)) that provides **real-time visualization of indoor user location**, improving indoor navigation efficiency. -->
 
-Before that, I received my PhD degree (Dec. 2023) and Bachelor's degree (Jun. 2018) from Harbin Engineering University, supervised by [Prof. Yibing Li](https://scholar.google.com/citations?hl=en&user=t3ZTXvAAAAAJ). 
+Before that, I received my PhD degree (Dec. 2023) and Bachelor's degree (Jun. 2018) from the Department of Information and Communication Engineering, Harbin Engineering University, supervised by [Prof. Yibing Li](https://scholar.google.com/citations?hl=en&user=t3ZTXvAAAAAJ). 
 My doctoral research focused on optimizing real-time obstacle avoidance and long-distance trajectory planning for Unmanned Aerial Vehicles (UAVs) based on Deep Reinforcement Learning (DRL). 
 
 <!-- My doctoral research focused on the development of advanced **DRL algorithms** to enhance **autonomous navigation** in complex and dynamic environments, with a particular emphasis on optimizing **real-time obstacle avoidance** and long-distance **trajectory planning** for **Unmanned Aerial Vehicles (UAVs)**.  -->
