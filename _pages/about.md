@@ -26,7 +26,7 @@ Hi! I am Sitong Zhang (张思桐), now a postdoctoral researcher at the Departme
 
 <!-- I recently relocated to *Espoo, Finland*, for family reasons and am actively exploring new opportunities. ***Feel free to reach out directly if you think I could be a good fit!*** -->
 
-Previously, I was a postdoctoral researcher at the CityU-Oxford Joint Centre for Intelligent Multidimensional Data Analysis (CIMDA) Limited (Hong Kong), supervised by [Prof. Hong Yan](https://www.ee.cityu.edu.hk/~hpyan/). During this time, I developed an AI-enabled indoor positioning app to improve indoor navigation efficiency.
+Previously, I was a postdoctoral researcher at the CityU-Oxford Joint Centre for Intelligent Multidimensional Data Analysis (CIMDA) Limited (Hong Kong), supervised by [Prof. Hong Yan](https://scholar.google.com/citations?hl=en&user=oKwuCfAAAAAJ). During this time, I developed an AI-enabled indoor positioning app to improve indoor navigation efficiency.
 
 <!-- During my time as a postdoctoral fellow, I developed a CNN-self-attention-based algorithm for indoor positioning and worked with cross-functional teams to create an **AI-integrated Android app** ([demo video](https://youtu.be/-vnb9UGy3qE?si=u0UfoA5vNOybk84e)) that provides **real-time visualization of indoor user location**, improving indoor navigation efficiency. -->
 
