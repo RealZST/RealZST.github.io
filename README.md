@@ -33,15 +33,6 @@ Then visit `http://<your-LAN-IP>:4000` from the other device.
 Publications / Projects / Notes pages exist in `_pages/` but are set to
 `published: false` for v1 — re-enable by removing that front-matter line.
 
-## Deploy
-
-Pushing to `master` triggers `.github/workflows/deploy.yml`, which builds the
-site (with all plugins including `jekyll-scholar`) and publishes to GitHub
-Pages.
-
-In repo **Settings → Pages → Source**, ensure the source is set to
-**GitHub Actions** (not "Deploy from a branch").
-
 ## Credits
 
 Originally scaffolded from [al-folio](https://github.com/alshedivat/al-folio)
