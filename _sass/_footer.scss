@@ -1,0 +1,25 @@
+// _sass/_footer.scss
+.site-footer {
+  padding: 24px var(--frame-pad-x);
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-meta);
+  color: var(--color-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.site-footer .socials a {
+  color: var(--color-primary);
+  border-bottom: none;
+  margin-left: 14px;
+}
+.site-footer .socials a:first-child { margin-left: 0; }
+.site-footer .socials a:hover { text-decoration: underline; }
+
+@media (max-width: 560px) {
+  .site-footer { padding: 18px 20px; }
+}

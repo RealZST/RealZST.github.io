@@ -1,0 +1,43 @@
+<nav class="site-nav">
+  <a class="brand" href="{{ '/' | relative_url }}">{{ site.first_name }} {{ site.last_name }}</a>
+  <div class="nav-socials">
+    <a href="#" class="nav-email" data-email="{{ site.email }}">email</a>
+    {%- if site.scholar_userid -%}
+      <a href="https://scholar.google.com/citations?user={{ site.scholar_userid }}" target="_blank" rel="noopener">google scholar</a>
+    {%- endif -%}
+    {%- if site.github_username -%}
+      <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">github</a>
+    {%- endif -%}
+    {%- if site.linkedin_username -%}
+      <a href="https://linkedin.com/in/{{ site.linkedin_username }}" target="_blank" rel="noopener">linkedin</a>
+    {%- endif -%}
+  </div>
+</nav>
+<script>
+(function () {
+  var btn = document.querySelector('.nav-email');
+  if (!btn) return;
+  var original = btn.textContent;
+  btn.addEventListener('click', function (e) {
+    e.preventDefault();
+    var email = btn.dataset.email;
+    var done = function () {
+      btn.textContent = 'copied ✓';
+      btn.classList.add('is-copied');
+      setTimeout(function () {
+        btn.textContent = original;
+        btn.classList.remove('is-copied');
+      }, 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(done, done);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = email; document.body.appendChild(ta);
+      ta.select(); try { document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(ta);
+      done();
+    }
+  });
+})();
+</script>

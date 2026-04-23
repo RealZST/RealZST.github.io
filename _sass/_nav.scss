@@ -1,0 +1,46 @@
+// _sass/_nav.scss
+.site-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px var(--frame-pad-x);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-nav .brand {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  border-bottom: none;
+}
+
+// Social links (email click-to-copy + scholar/github/linkedin)
+.site-nav .nav-socials {
+  display: flex;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-meta);
+}
+.site-nav .nav-socials a {
+  color: var(--color-primary);
+  border-bottom: none;
+  cursor: pointer;
+  transition: color 140ms ease;
+}
+.site-nav .nav-socials a:hover { text-decoration: underline; }
+.site-nav .nav-socials a.is-copied {
+  color: var(--color-primary);
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+@media (max-width: 560px) {
+  .site-nav {
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 20px;
+  }
+  .site-nav .nav-socials { gap: 14px; }
+}

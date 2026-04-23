@@ -1,0 +1,42 @@
+// _sass/_tokens.scss
+// All design tokens for the B1 Soft Cream theme. Consumed by every component sheet.
+
+:root {
+  // Color
+  --color-bg: #fbf7ef;
+  --color-text: #2e2a22;
+  --color-muted: #6b6256;
+  --color-muted-2: #8a8074;
+  --color-primary: #c07040;
+  --color-accent: #f2e5d0;
+  --color-accent-deep: #ead7b3;
+  --color-border: #ebe3d2;
+  --color-bulletin-bg: #f7eedb;
+  --color-bulletin-border: #d9b97c;
+
+  // Font families
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, ui-serif, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  // Sizing anchors (per spec)
+  --fs-hero: 36px;
+  --fs-role: 12.5px;
+  --fs-body: 15.5px;
+  --fs-section: 14px;
+  --fs-pub-title: 15.5px;
+  --fs-mono-meta: 11.5px;
+
+  // Spacing
+  --frame-max: 1120px;
+  --frame-pad-x: 56px;
+  --content-max: 820px;
+
+  // Radius + borders
+  --r-card: 8px;
+  --r-chip: 4px;
+}
+
+// Breakpoints (consumed in media queries manually; kept here for reference)
+$bp-tablet: 880px;
+$bp-phone: 560px;
