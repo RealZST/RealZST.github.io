@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<section class="section note-page content-col">
+  <a class="back-link" href="{{ '/notes/' | relative_url }}">← all notes</a>
+  <h1 class="note-header">{{ page.title }}</h1>
+  <div class="note-meta">
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
+  </div>
+  <article class="note-body">
+    {{ content }}
+  </article>
+</section>

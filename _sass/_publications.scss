@@ -1,0 +1,17 @@
+// _sass/_publications.scss
+// Row styles come from _home.scss (shared via .pub-item class) — no duplication here.
+
+.publications-page .intro {
+  color: var(--color-muted);
+  font-size: 14px;
+  margin: -6px 0 22px;
+}
+
+.publications-page .pub-list {
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 880px) {
+  .section.publications-page { padding: 0 24px 36px; }
+}

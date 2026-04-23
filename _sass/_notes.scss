@@ -1,0 +1,104 @@
+// _sass/_notes.scss
+.notes-page .intro,
+.note-page .note-meta {
+  color: var(--color-muted);
+  font-size: 13.5px;
+  font-family: var(--font-mono);
+  margin: -6px 0 22px;
+}
+
+.note-list {
+  margin: 0;
+  padding: 0;
+}
+
+.note-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.note-item:last-child { border-bottom: none; }
+
+.note-date {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--color-muted);
+  margin-right: 12px;
+}
+
+.note-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+  border-bottom: none;
+}
+.note-title:hover { color: var(--color-primary); }
+
+.note-summary {
+  font-size: 13.5px;
+  color: var(--color-muted);
+  margin: 4px 0 0;
+}
+
+// ---- Single note ----
+.note-page .back-link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-muted);
+  border-bottom: none;
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+.note-header {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.note-body {
+  margin-top: 20px;
+  font-size: var(--fs-body);
+  line-height: 1.75;
+}
+.note-body p {
+  margin: 0 0 16px;
+  text-align: justify;
+  hyphens: auto;
+}
+.note-body h2 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  margin: 28px 0 10px;
+}
+.note-body h3 {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  margin: 24px 0 8px;
+}
+.note-body pre, .note-body code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.note-body pre {
+  background: rgba(0,0,0,0.035);
+  padding: 14px 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+.note-body code {
+  background: var(--color-accent);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.note-body pre code {
+  background: transparent;
+  padding: 0;
+}
+
+@media (max-width: 880px) {
+  .section.notes-page,
+  .section.note-page { padding: 0 24px 36px; }
+}

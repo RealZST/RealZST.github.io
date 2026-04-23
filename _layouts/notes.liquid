@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<section class="section notes-page content-col">
+  <h2>Notes</h2>
+  <p class="intro">{{ content | markdownify }}</p>
+  {% assign sorted_notes = site.notes | sort: 'date' | reverse %}
+  {% if sorted_notes.size > 0 %}
+    <ul class="note-list">
+      {% for note in sorted_notes %}
+        <li class="note-item">
+          <span class="note-date">{{ note.date | date: '%Y.%m.%d' }}</span>
+          <a class="note-title" href="{{ note.url | relative_url }}">{{ note.title }}</a>
+          {% if note.summary %}<p class="note-summary">{{ note.summary }}</p>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="notes-empty">Coming soon — technical writing on systems, DRL, and the messy space between them. Expect short-form posts on harnesskit design decisions, inference-engine internals, and DRL-to-systems crossovers.</p>
+  {% endif %}
+</section>

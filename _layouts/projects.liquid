@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<section class="section projects-page content-col">
+  <h2>Projects</h2>
+  <p class="intro">{{ content | markdownify }}</p>
+  <ul class="project-list">
+    {% assign sorted = site.projects | sort: 'order' %}
+    {% for project in sorted %}
+      <li class="project-item">
+        <a class="project-title" href="{{ project.url | relative_url }}">{{ project.title }}</a>
+        {% if project.one_liner %}
+          <p class="project-oneliner">{{ project.one_liner }}</p>
+        {% endif %}
+        <div class="project-meta">
+          {% if project.tags %}
+            {% for tag in project.tags %}<span class="project-tag">{{ tag }}</span>{% endfor %}
+          {% endif %}
+          {% if project.repo %}
+            <a class="project-repo" href="{{ project.repo }}">github ↗</a>
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</section>

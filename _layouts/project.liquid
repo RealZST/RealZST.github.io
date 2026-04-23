@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<section class="section project-page content-col">
+  <a class="back-link" href="{{ '/projects/' | relative_url }}">← all projects</a>
+  <h1 class="project-header">{{ page.title }}</h1>
+  {% if page.one_liner %}<p class="project-subtitle">{{ page.one_liner }}</p>{% endif %}
+  {% if page.tags or page.repo %}
+    <div class="project-meta">
+      {% if page.tags %}{% for tag in page.tags %}<span class="project-tag">{{ tag }}</span>{% endfor %}{% endif %}
+      {% if page.repo %}<a class="project-repo" href="{{ page.repo }}">github ↗</a>{% endif %}
+    </div>
+  {% endif %}
+  <div class="project-body">
+    {{ content }}
+  </div>
+</section>
