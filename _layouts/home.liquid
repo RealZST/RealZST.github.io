@@ -1,0 +1,62 @@
+---
+layout: default
+---
+<section class="hero">
+  <img class="avatar" src="{{ '/assets/img/prof_pic.jpg' | relative_url }}" alt="{{ site.first_name }} {{ site.last_name }}">
+  <div class="hero-text">
+    <h1>{{ site.first_name }} {{ site.last_name }}</h1>
+    <p class="role">{{ page.role_line }}</p>
+    {{ content }}
+  </div>
+</section>
+
+{% if page.bulletin and page.bulletin.size > 0 %}
+<section class="bulletin">
+  <div class="bulletin-label">Currently building</div>
+  {% for item in page.bulletin %}
+    <div class="bulletin-item">
+      <strong>{{ item.name }}</strong> — <span class="bulletin-desc">{{ item.desc }}</span>{% if item.mascot or item.url or item.gh_repo %}<span class="bulletin-trailing">{% if item.mascot == "claude" %}{% include claude-mascot.liquid %}{% endif %}{% if item.url %} <a href="{{ item.url }}" aria-label="{{ item.name }} link">↗</a>{% endif %}{% if item.gh_repo %} <span class="gh-chip" data-repo="{{ item.gh_repo }}"><span class="gh-star">★</span><span class="gh-star-count">—</span></span>{% endif %}</span>{% endif %}
+    </div>
+  {% endfor %}
+</section>
+{% include gh-stars.liquid %}
+{% endif %}
+
+<section class="section research">
+  <h2>Research Interests</h2>
+  <div class="research-body">
+    <div class="research-text">
+      <div class="research-tags">
+        {% for tag in page.research_tags %}
+          <span class="research-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      <div class="research-focus">{{ page.research_paragraph | markdownify }}</div>
+    </div>
+    <div class="research-map">
+      {% include research-map.liquid %}
+    </div>
+  </div>
+</section>
+
+<section class="section publications-home content-col">
+  <h2>Selected Publications</h2>
+  <p class="pub-note">Systems papers currently under submission.</p>
+  <ul class="pub-list">
+    {% bibliography --query @*[year=2022, selected=true] %}
+    {% bibliography --query @*[year=2023, selected=true] --max 2 %}
+  </ul>
+  <a class="section-link" href="https://scholar.google.com/citations?user=Fv1FPy0AAAAJ" target="_blank" rel="noopener">view all publications on Google Scholar →</a>
+</section>
+
+{% comment %} Notes teaser hidden for v1. Restore once notes page is re-enabled.
+<section class="section notes-teaser content-col">
+  <h2>Notes</h2>
+  <p class="notes-empty">Coming soon — technical writing on systems, DRL, and the messy space between them.</p>
+</section>
+{% endcomment %}
+
+<!--
+  News section — reserved for future, not rendered in v1.
+  Data lives in _news/*.md. To re-enable, render an inline timeline here.
+-->

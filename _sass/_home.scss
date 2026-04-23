@@ -1,0 +1,537 @@
+// _sass/_home.scss — assembled across Tasks 10-14
+
+// -------- Hero --------
+.hero {
+  padding: 52px var(--frame-pad-x) 36px;
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.hero .avatar {
+  width: 170px;
+  aspect-ratio: 3 / 4;
+  height: auto;
+  border-radius: var(--r-card);
+  border: 1px solid var(--color-border);
+  object-fit: cover;
+}
+
+.hero h1 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: var(--fs-hero);
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  color: var(--color-text);
+}
+
+.hero .role {
+  font-family: var(--font-mono);
+  font-size: var(--fs-role);
+  color: var(--color-primary);
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
+}
+.hero .role .dot { color: var(--color-muted-2); margin: 0 8px; }
+
+.hero p {
+  margin: 0 0 10px;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--color-text);
+  max-width: 720px;
+  text-align: justify;
+  hyphens: auto;
+}
+.hero p:last-child { margin-bottom: 0; }
+
+@media (max-width: 880px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 36px 24px 28px;
+    gap: 20px;
+  }
+  .hero .avatar { width: 140px; aspect-ratio: 3 / 4; height: auto; }
+}
+
+// -------- Bulletin (Currently building) --------
+.bulletin {
+  margin: 0 var(--frame-pad-x) 40px;
+  background: var(--color-bulletin-bg);
+  border: 1px solid var(--color-bulletin-border);
+  border-radius: var(--r-card);
+  padding: 20px 20px;
+}
+
+.bulletin-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8a5530;
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bulletin-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.bulletin-item {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  color: var(--color-text);
+}
+.bulletin-item:last-child { margin-bottom: 0; }
+.bulletin-item strong { font-weight: 600; }
+.bulletin-item .bulletin-desc { color: var(--color-muted); }
+.bulletin-item a {
+  color: var(--color-primary);
+  border-bottom: none;
+  padding-left: 4px;
+}
+
+// Keep mascot + ↗ + star chip together on one line
+.bulletin-item .bulletin-trailing {
+  white-space: nowrap;
+}
+
+// GitHub star chip ([★ 118] style — static metadata, not a link)
+.bulletin-item .gh-chip {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--color-muted);
+  margin-left: 4px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.bulletin-item .gh-chip::before { content: "["; }
+.bulletin-item .gh-chip::after { content: "]"; }
+.bulletin-item .gh-chip .gh-star {
+  font-size: 1.25em;
+  line-height: 1;
+  vertical-align: -1px;
+}
+
+@media (max-width: 880px) {
+  .bulletin { margin: 0 24px 32px; padding: 16px 20px; }
+}
+
+// -------- Claude mascot (inline in HarnessKit bulletin item) --------
+.bulletin-item .mascot-claude {
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: auto;
+  margin: 0 2px;
+  overflow: visible;
+}
+.mascot-claude .pixel { fill: #c98867; }
+.mascot-claude .eye { fill: #1f1710; }
+.mascot-claude .body { transform-origin: 120px 55px; }
+.mascot-claude .arm-right { transform-origin: 200px 75px; }
+.mascot-claude .arm-left { transform-origin: 40px 75px; }
+.mascot-claude .legs { transform-origin: 120px 110px; }
+
+.mascot-claude.is-animated {
+  animation: claude-jump 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+.mascot-claude.is-animated .arm-right {
+  animation: claude-wave-right 1.2s ease-in-out infinite;
+}
+.mascot-claude.is-animated .arm-left {
+  animation: claude-wave-left 1.2s ease-in-out infinite;
+}
+.mascot-claude.is-animated .legs {
+  animation: claude-legs-squash-light 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+.mascot-claude.is-animated .eye {
+  animation: claude-blink 3.2s infinite;
+}
+
+@keyframes claude-jump {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-6px) scale(0.96, 1.06); }
+  50% { transform: translateY(-8px) scale(0.95, 1.07); }
+  80% { transform: translateY(-1px) scale(1.04, 0.96); }
+}
+@keyframes claude-wave-right {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-25deg); }
+  30% { transform: rotate(15deg); }
+  45% { transform: rotate(-20deg); }
+  60% { transform: rotate(10deg); }
+  75% { transform: rotate(0deg); }
+}
+@keyframes claude-wave-left {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(25deg); }
+  30% { transform: rotate(-15deg); }
+  45% { transform: rotate(20deg); }
+  60% { transform: rotate(-10deg); }
+  75% { transform: rotate(0deg); }
+}
+@keyframes claude-legs-squash-light {
+  0%, 100% { transform: scaleY(1); }
+  30% { transform: scaleY(0.8); }
+  50% { transform: scaleY(0.75); }
+  80% { transform: scaleY(1.05); }
+}
+@keyframes claude-blink {
+  0%, 90%, 94%, 100% { transform: scaleY(1); }
+  92% { transform: scaleY(0.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-claude.is-animated,
+  .mascot-claude.is-animated * {
+    animation: none;
+  }
+}
+
+// -------- Research section --------
+.research-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .research-body { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.research-focus {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.72;
+  color: var(--color-text);
+  margin: 0;
+}
+.research-focus p {
+  margin: 0 0 14px;
+  text-align: justify;
+  hyphens: auto;
+}
+.research-focus p:last-child { margin-bottom: 0; }
+.research-focus strong { font-weight: 600; }
+
+.research-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.research-tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-meta);
+  padding: 3px 10px;
+  border-radius: var(--r-chip);
+  background: var(--color-accent);
+  color: #8a5530;
+  border: 1px solid var(--color-accent-deep);
+}
+
+// -------- Research map: RL Training Stack diagram (2-layer with sub-concerns) --------
+.stack-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stack-title {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+// Stacked layers (shared borders, outer rounded corners only)
+.stack-layers {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-card);
+  overflow: visible;
+  background: #fff;
+  margin-left: 22px;
+}
+
+// Left rail: vertical axis line spanning both layers, with ↓ arrowhead at bottom.
+// Makes the "stack" direction (top → bottom) visually explicit.
+.stack-layers::before {
+  content: '';
+  position: absolute;
+  left: -13px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: var(--color-primary);
+  opacity: 0.75;
+}
+.stack-layers::after {
+  content: '▼';
+  position: absolute;
+  left: -22px;
+  bottom: 8px;
+  width: 20px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--color-primary);
+  opacity: 0.9;
+}
+
+// Inner layer borders — slightly stronger so "stacking" is legible.
+.stack-layers > .stack-layer + .stack-layer {
+  border-top: 1px solid var(--color-border);
+}
+
+.stack-layer {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  position: relative;
+  background: #fff;
+  transition: background-color 160ms ease;
+  cursor: default;
+}
+.stack-layer:last-child { border-bottom: none; }
+
+.stack-layer-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+
+.stack-layer-title {
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.stack-layer-era {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-muted-2);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.stack-layer-desc {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-muted);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+// Active hovered/tapped layer
+.stack-layer[data-layer] {
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(192, 112, 64, 0.18);
+}
+.stack-layer.is-active {
+  background: rgba(192, 112, 64, 0.14);
+}
+
+// Fat Runtime layer: more vertical breathing room for sub-concerns
+.stack-layer.is-fat {
+  padding: 14px 16px 16px;
+}
+
+// Sub-concern items inside Runtime layer
+.stack-sublayers {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.stack-sub {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 6px 2px 4px;
+  border-radius: 4px;
+}
+
+.stack-sub-dot {
+  font-size: 11px;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.stack-sub-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+
+.stack-sub-tag {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--color-primary);
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  opacity: 0.85;
+}
+
+// Detail panel below the stack (swaps content on hover)
+.stack-detail {
+  margin-top: 4px;
+  margin-left: 22px;
+  padding: 12px 14px;
+  background: var(--color-bulletin-bg);
+  border: 1px solid var(--color-bulletin-border);
+  border-radius: var(--r-card);
+  min-height: 72px;
+  position: relative;
+}
+.stack-detail-item {
+  display: none;
+}
+.stack-detail-item.is-active {
+  display: block;
+  animation: stack-detail-in 140ms ease-out;
+}
+.stack-detail-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+}
+.stack-detail-body {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--color-text);
+  text-align: justify;
+  hyphens: auto;
+}
+
+@keyframes stack-detail-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 880px) {
+  .stack-diagram { margin-top: 6px; }
+}
+
+// Touch devices: hover doesn't exist. JS swaps DEFAULT to "runtime" so users
+// see real content on load, and click listeners let them toggle Algorithm.
+@media (hover: none) and (pointer: coarse) {
+  .stack-detail-item[data-layer="__default"] { display: none; }
+}
+
+@media (max-width: 880px) {
+  .section.research { padding: 0 24px 36px; }
+}
+
+// -------- Selected Publications (home version) --------
+.pub-note {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+  margin: -4px 0 14px;
+}
+
+.pub-list {
+  margin: 0;
+  padding: 0;
+}
+
+.pub-item {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 20px;
+  align-items: baseline;
+}
+.pub-item:last-child { border-bottom: none; }
+
+.pub-year {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-meta);
+  color: var(--color-muted);
+}
+
+.pub-title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-pub-title);
+  line-height: 1.45;
+  margin: 0 0 4px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.pub-venue {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+.pub-venue em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-primary);
+}
+.pub-venue .link {
+  color: var(--color-muted-2);
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-bottom: 1px dotted var(--color-muted-2);
+}
+.pub-venue .link:hover { color: var(--color-text); border-bottom-color: var(--color-text); }
+
+.pub-bibtex { display: none; }
+
+.section-link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--color-primary);
+  font-family: var(--font-mono);
+  border-bottom: none;
+}
+.section-link:hover { text-decoration: underline; }
+
+@media (max-width: 880px) {
+  .section.publications-home { padding: 0 24px 36px; }
+  .pub-item { grid-template-columns: 54px 1fr; gap: 14px; }
+}
+
+// -------- Notes teaser (home version) --------
+.notes-empty {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--color-muted);
+  font-style: italic;
+  padding: 8px 0;
+  margin: 0;
+}
+
+@media (max-width: 880px) {
+  .section.notes-teaser { padding: 0 24px 36px; }
+}

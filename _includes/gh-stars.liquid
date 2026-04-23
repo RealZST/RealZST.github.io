@@ -1,0 +1,50 @@
+<script>
+(function () {
+  var badges = document.querySelectorAll(".gh-chip[data-repo]");
+  if (!badges.length) return;
+
+  var CACHE_PREFIX = "gh_stars:";
+  var CACHE_TTL = 3600 * 1000; // 1 hour
+
+  function getCached(repo) {
+    try {
+      var raw = localStorage.getItem(CACHE_PREFIX + repo);
+      if (!raw) return null;
+      var obj = JSON.parse(raw);
+      if (Date.now() - obj.ts > CACHE_TTL) return null;
+      return obj.count;
+    } catch (e) { return null; }
+  }
+
+  function setCached(repo, count) {
+    try {
+      localStorage.setItem(
+        CACHE_PREFIX + repo,
+        JSON.stringify({ count: count, ts: Date.now() })
+      );
+    } catch (e) { /* quota full / disabled — fine */ }
+  }
+
+  function format(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    return String(n);
+  }
+
+  badges.forEach(function (badge) {
+    var repo = badge.getAttribute("data-repo");
+    var out = badge.querySelector(".gh-star-count");
+    var cached = getCached(repo);
+    if (cached !== null) { out.textContent = format(cached); return; }
+
+    fetch("https://api.github.com/repos/" + repo)
+      .then(function (res) { if (!res.ok) throw new Error("api"); return res.json(); })
+      .then(function (data) {
+        var count = data.stargazers_count;
+        if (typeof count !== "number") throw new Error("no count");
+        out.textContent = format(count);
+        setCached(repo, count);
+      })
+      .catch(function () { /* leave '—' on failure */ });
+  });
+})();
+</script>

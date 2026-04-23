@@ -1,0 +1,114 @@
+{% comment %}
+  Research map — 2-layer stack: Algorithm (past) and Runtime (current).
+  Sub-concerns under Runtime use canonical MLSys terminology
+  (scheduling / placement / orchestration) and share a single Runtime detail
+  panel on hover. Hover any layer to swap the detail below.
+{% endcomment %}
+<div class="stack-diagram" role="figure" aria-label="My research across two layers of the RL training stack. Hover a layer to see details.">
+  <div class="stack-title">RL Training Stack</div>
+
+  <div class="stack-layers">
+    <div class="stack-layer" data-layer="algorithm">
+      <div class="stack-layer-head">
+        <span class="stack-layer-title">Algorithm</span>
+        <span class="stack-layer-era">2018–2024</span>
+      </div>
+      <div class="stack-layer-desc">policy design, learning objectives</div>
+    </div>
+
+    <div class="stack-layer is-fat" data-layer="runtime">
+      <div class="stack-layer-head">
+        <span class="stack-layer-title">Runtime</span>
+        <span class="stack-layer-era">2025–</span>
+      </div>
+      <div class="stack-sublayers">
+        <div class="stack-sub">
+          <span class="stack-sub-dot">▸</span>
+          <span class="stack-sub-name">scheduling</span>
+          <span class="stack-sub-tag">when</span>
+        </div>
+        <div class="stack-sub">
+          <span class="stack-sub-dot">▸</span>
+          <span class="stack-sub-name">placement</span>
+          <span class="stack-sub-tag">where</span>
+        </div>
+        <div class="stack-sub">
+          <span class="stack-sub-dot">▸</span>
+          <span class="stack-sub-name">orchestration</span>
+          <span class="stack-sub-tag">how</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack-detail" aria-live="polite">
+    <div class="stack-detail-item is-active" data-layer="__default">
+      <div class="stack-detail-kicker">hover to explore</div>
+      <div class="stack-detail-body">
+        Hover a layer to see what I work on there.
+      </div>
+    </div>
+
+    <div class="stack-detail-item" data-layer="algorithm">
+      <div class="stack-detail-kicker">past work · 2018–2024</div>
+      <div class="stack-detail-body">
+        Deep reinforcement learning for UAV autonomous navigation —
+        obstacle avoidance, long-distance trajectory planning, and
+        human-in-the-loop motion planning.
+      </div>
+    </div>
+
+    <div class="stack-detail-item" data-layer="runtime">
+      <div class="stack-detail-kicker">current focus · 2025–</div>
+      <div class="stack-detail-body">
+        Runtime systems for distributed RL and LLM post-training. The right
+        balance of compute, memory, and interconnect shifts continuously with
+        model scale, workload characteristics, and hardware conditions.
+        Scheduling, placement, and orchestration are the runtime levers that
+        keep the system responsive to these dynamics at cluster scale.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var layers = document.querySelectorAll(".stack-layer[data-layer]");
+  var details = document.querySelectorAll(".stack-detail-item[data-layer]");
+  if (!layers.length || !details.length) return;
+
+  // On touch devices (no hover, coarse pointer), default to runtime content
+  // instead of the "hover to explore" prompt, since hover is unavailable.
+  var isTouch = window.matchMedia &&
+                window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  var DEFAULT = isTouch ? "runtime" : "__default";
+
+  function setDetail(key) {
+    details.forEach(function (d) {
+      d.classList.toggle("is-active", d.dataset.layer === key);
+    });
+  }
+  function highlightLayer(key) {
+    layers.forEach(function (l) {
+      l.classList.toggle("is-active", l.dataset.layer === key);
+    });
+  }
+  function activate(key) {
+    highlightLayer(key);
+    setDetail(key);
+  }
+
+  layers.forEach(function (el) {
+    el.addEventListener("mouseenter", function () { activate(el.dataset.layer); });
+    el.addEventListener("click", function () { activate(el.dataset.layer); });
+  });
+
+  var root = document.querySelector(".stack-layers");
+  if (root) {
+    root.addEventListener("mouseleave", function () { activate(DEFAULT); });
+  }
+
+  // Sync initial state (important on touch devices where DEFAULT differs from HTML).
+  activate(DEFAULT);
+})();
+</script>

@@ -1,38 +1,37 @@
 ---
-layout: about
-title: about
+layout: home
+title: home
 permalink: /
-subtitle: Espoo, Finland
+role_line: "postdoc · aalto university · espoo, finland"
+bulletin:
+  - name: HarnessKit
+    desc: >
+      A control plane for your AI coding agents — see, secure, and manage every
+      extension and config from one place.
+    url: https://github.com/RealZST/harnesskit
+    mascot: claude
+    gh_repo: RealZST/harnesskit
+  - name: ItsMyPod
+    desc: >
+      A personal podcast channel turning your reading backlog into a daily audio
+      edition — a full LLM + TTS pipeline.
+research_paragraph: |
+  My research lies at the intersection of **machine learning and systems**.
+  I currently focus on infrastructure for distributed reinforcement learning
+  and LLM post-training, with particular interest in the runtime designs
+  that make these workloads fast, adaptive, and cost-aware at cluster scale.
 
-profile:
-  align: right
-  image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
+  This builds on my doctoral work in **reinforcement learning** itself, where I
+  developed deep reinforcement learning methods for UAV autonomous navigation.
+  After years inside the training loop, I now work on the systems that run
+  it at scale.
 
-    
-
-work_experience: false # includes a list of news items
-education: false
-news: false
-selected_papers: true # includes a list of papers marked as "selected={true}"
-awards: false
-social: false # includes social icons at the bottom of the page
+research_tags:
+  - Deep Reinforcement Learning
+  - MLSys
+  - LLM Infra
 ---
 
+Hi — I'm Sitong Zhang, a Postdoctoral Researcher at [Aalto University](https://www.aalto.fi/en), Department of Computer Science, working with [Prof. Bo Zhao](https://zbjob.github.io/).
 
-Hi! I am Sitong Zhang (张思桐), now a postdoctoral researcher at the Department of Computer Science, Aalto University, supervised by [Prof. Bo Zhao](https://zbjob.github.io/). 
-
-<!-- a researcher with **over six years of experience** specializing in **Deep Learning (DL)** and **Deep Reinforcement Learning (DRL)**. -->
-
-<!-- I recently relocated to *Espoo, Finland*, for family reasons and am actively exploring new opportunities. ***Feel free to reach out directly if you think I could be a good fit!*** -->
-
-Previously, I was a postdoctoral researcher at the CityU-Oxford Joint Centre for Intelligent Multidimensional Data Analysis (CIMDA) Limited (Hong Kong), supervised by [Prof. Hong Yan](https://scholar.google.com/citations?hl=en&user=oKwuCfAAAAAJ). During this time, I developed an AI-enabled indoor positioning app to improve indoor navigation efficiency.
-
-<!-- During my time as a postdoctoral fellow, I developed a CNN-self-attention-based algorithm for indoor positioning and worked with cross-functional teams to create an **AI-integrated Android app** ([demo video](https://youtu.be/-vnb9UGy3qE?si=u0UfoA5vNOybk84e)) that provides **real-time visualization of indoor user location**, improving indoor navigation efficiency. -->
-
-Before that, I received my PhD degree (Dec. 2023) and Bachelor's degree (Jun. 2018) from the Department of Information and Communication Engineering, Harbin Engineering University, supervised by [Prof. Yibing Li](https://scholar.google.com/citations?hl=en&user=t3ZTXvAAAAAJ). 
-My doctoral research focused on optimizing real-time obstacle avoidance and long-distance trajectory planning for Unmanned Aerial Vehicles (UAVs) based on Deep Reinforcement Learning (DRL). 
-
-<!-- My doctoral research focused on the development of advanced **DRL algorithms** to enhance **autonomous navigation** in complex and dynamic environments, with a particular emphasis on optimizing **real-time obstacle avoidance** and long-distance **trajectory planning** for **Unmanned Aerial Vehicles (UAVs)**.  -->
-
-<!-- My passion lies in **bridging the gap between state-of-the-art AI research and real-world applications**, leveraging cutting-edge technologies to create innovative, impactful solutions that address practical challenges and drive advancements across diverse industries.  -->
+Before Aalto I was a Postdoctoral Researcher at [CityU-Oxford Joint CIMDA](https://www.innocimda.com/index.html), [City University of Hong Kong](https://www.cityu.edu.hk/), working with [Prof. Hong Yan](https://scholar.google.com/citations?hl=en&user=oKwuCfAAAAAJ) (IEEE Fellow). I received my PhD (2023) and BEng (2018) from [Harbin Engineering University](https://english.hrbeu.edu.cn/), advised by [Prof. Yibing Li](https://scholar.google.com/citations?hl=en&user=t3ZTXvAAAAAJ).
