@@ -448,14 +448,6 @@
 }
 
 // -------- Selected Publications (home version) --------
-.pub-note {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--color-muted);
-  letter-spacing: 0.02em;
-  margin: -4px 0 14px;
-}
-
 .pub-list {
   margin: 0;
   padding: 0;
@@ -509,7 +501,7 @@
 
 .section-link {
   display: inline-block;
-  margin-top: 16px;
+  margin: -4px 0 14px;
   font-size: 13px;
   color: var(--color-primary);
   font-family: var(--font-mono);

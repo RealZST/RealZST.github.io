@@ -41,12 +41,13 @@ layout: default
 
 <section class="section publications-home content-col">
   <h2>Selected Publications</h2>
-  <p class="pub-note">Systems papers currently under submission.</p>
-  <ul class="pub-list">
-    {% bibliography --query @*[year=2022, selected=true] %}
-    {% bibliography --query @*[year=2023, selected=true] --max 2 %}
-  </ul>
   <a class="section-link" href="https://scholar.google.com/citations?user=Fv1FPy0AAAAJ" target="_blank" rel="noopener">view all publications on Google Scholar →</a>
+  <ul class="pub-list">
+    {% bibliography --query @*[key=zhang2026conduit] %}
+    {% bibliography --query @*[key=jiang2026nereus] %}
+    {% bibliography --query @*[year=2022, selected=true] %}
+    {% bibliography --query @*[year=2023, selected=true] %}
+  </ul>
 </section>
 
 {% comment %} Notes teaser hidden for v1. Restore once notes page is re-enabled.
