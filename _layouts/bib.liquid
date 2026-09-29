@@ -6,6 +6,17 @@
   <span class="pub-year">{{ entry.year }}</span>
   <div class="pub-main">
     <div class="pub-title">{{ entry.title }}</div>
+    <div class="pub-authors">
+      {%- for author in entry.author_array -%}
+        {%- assign author_name = author.first | append: " " | append: author.last -%}
+        {%- if author.last == site.scholar.last_name and site.scholar.first_name contains author.first -%}
+          <strong>{{ author_name }}</strong>
+        {%- else -%}
+          {{ author_name }}
+        {%- endif -%}
+        {%- unless forloop.last -%}, {% endunless -%}
+      {%- endfor -%}
+    </div>
     <div class="pub-venue">
       {%- if entry.journal -%}<em>{{ entry.journal }}</em>
       {%- elsif entry.booktitle -%}<em>{{ entry.booktitle }}</em>

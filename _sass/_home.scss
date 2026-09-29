@@ -478,6 +478,18 @@
   color: var(--color-text);
 }
 
+.pub-authors {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 0 0 4px;
+  color: var(--color-muted);
+}
+.pub-authors strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
 .pub-venue {
   font-family: var(--font-sans);
   font-size: 12px;
