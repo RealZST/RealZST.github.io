@@ -16,31 +16,38 @@
   border-bottom: none;
 }
 
-// Social links (email click-to-copy + scholar/github/linkedin)
+// Social icons (email click-to-copy + scholar/github/linkedin/xiaohongshu)
 .site-nav .nav-socials {
   display: flex;
-  gap: 18px;
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-meta);
+  align-items: center;
+  gap: 16px;
 }
 .site-nav .nav-socials a {
+  display: inline-flex;
   color: var(--color-primary);
   border-bottom: none;
   cursor: pointer;
   transition: color 140ms ease;
 }
-.site-nav .nav-socials a:hover { text-decoration: underline; }
-.site-nav .nav-socials a.is-copied {
-  color: var(--color-primary);
-  text-decoration: none;
-  opacity: 0.8;
+.site-nav .nav-socials a:hover,
+.site-nav .nav-socials a:focus-visible { color: var(--color-text); }
+.site-nav .nav-socials .icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
+
+// Email: mail glyph swaps to a check for a moment after copying
+.site-nav .nav-email .icon-copied { display: none; }
+.site-nav .nav-email.is-copied .icon-idle { display: none; }
+.site-nav .nav-email.is-copied .icon-copied { display: inline-flex; }
+.site-nav .nav-email span { display: inline-flex; }
 
 @media (max-width: 560px) {
   .site-nav {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     padding: 16px 20px;
   }
-  .site-nav .nav-socials { gap: 14px; }
+  .site-nav .nav-socials { gap: 18px; }
 }
