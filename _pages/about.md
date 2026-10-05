@@ -11,16 +11,16 @@ bulletin:
     url: https://github.com/RealZST/harnesskit
     mascot: claude
     gh_repo: RealZST/harnesskit
-  - name: Paper Viewer
-    desc: >
-      A self-hosted paper workspace for research reading groups — daily arXiv
-      digest with AI intros, shared library, PDF annotation, and per-paper AI chat.
-    url: https://github.com/tshi92/paper-viewer
   - name: csconf-papers
     desc: >
       Accepted-paper lists for eight top systems and database conferences,
       rebuilt from DBLP on the first of every month.
     url: https://github.com/RealZST/csconf-papers
+  - name: Paper Viewer
+    desc: >
+      A self-hosted workspace for reading groups — daily arXiv digest,
+      shared library, PDF annotation, and per-paper AI chat.
+    url: https://github.com/tshi92/paper-viewer
 research_paragraph: |
   My research lies at the intersection of **machine learning and systems**.
   I currently focus on infrastructure for distributed reinforcement learning

@@ -21,11 +21,12 @@ baseurl:
 max_width: 1120px
 
 # -----------------------------------------------------------------------------
-# Social (used by _includes/footer.liquid)
+# Social (used by _includes/nav.liquid)
 # -----------------------------------------------------------------------------
 github_username: RealZST
 scholar_userid: Fv1FPy0AAAAJ
 linkedin_username: sitong-zhang-303687286
+xiaohongshu_userid: 69ced3ef0000000026000684
 
 # -----------------------------------------------------------------------------
 # Collections
