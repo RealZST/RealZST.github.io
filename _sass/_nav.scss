@@ -38,6 +38,18 @@
   fill: currentColor;
 }
 
+// Notes: a text link, set apart from the external icons
+.site-nav .nav-socials a.nav-text {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-left: 16px;
+  border-left: 1px solid var(--color-border);
+  line-height: 18px;
+}
+.site-nav .nav-socials a.nav-text.is-active { color: var(--color-text); }
+
 // Email: mail glyph swaps to a check for a moment after copying
 .site-nav .nav-email .icon-copied { display: none; }
 .site-nav .nav-email.is-copied .icon-idle { display: none; }
