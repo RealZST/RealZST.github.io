@@ -182,7 +182,7 @@ $$R$$ 从 1 取到 2048，数组读写共 512 MiB，远大于 L2。
 - **斜段**：时间约等于搬 512 MiB 的时间，$$R$$ 翻倍时运算量翻倍、时间不变，throughput 翻倍。
 - **平段**：运算单元已经满负荷，$$R$$ 翻倍时时间也翻倍，throughput 不再变。
 - **ridge point 附近是圆角**：实测比虚线低，因为搬运和运算不能完全同时进行。
-- **部分曲线的斜段偏低**：V100 的 FP32 和 FP64，以及 A100、H100、H200 的 FP64，这个 kernel 用到 53% 到 64% 的显存带宽，其余情况在 90% 以上。这是 kernel 写法的限制，不影响平段的高度。
+- **部分曲线的斜段偏低**：V100 的 FP32 和 FP64，以及 A100、H100、H200 的 FP64，这个 kernel 用到 53% 到 66% 的显存带宽，其余大都在 88% 以上。这是 kernel 写法的限制，不影响平段的高度。
 
 FMA sweep 平段的高度就是普通运算单元（NVIDIA 卡上是 CUDA Core）的 $$F$$：
 
@@ -272,8 +272,8 @@ M sweep 固定 $$N = K = 8192$$，只改变 $$M$$，相当于一个线性层的�
 
 ***图 6：prefill 的点都在 ridge point 右边，decode 的点都在斜段下方。**Qwen2.5-7B（BF16）第 14 层的七个线性层在各卡 BF16 roofline 上的位置。上行 prefill，下行 decode；三列分别是 H100、H200、RTX 4080。圆、方、三角分别是 batch 1 / prompt 1024 token、batch 8 / 1024 token、batch 8 / 4096 token；prefill 的 $$M$$ 是 batch 乘以 prompt 长度，decode 的 $$M$$ 等于 batch。RTX 4080 的显存是 16 GB，batch 8 的这两种 prompt 放不下，只测了 batch 1。*
 
-- **prefill 接近平段。** H100 上 $$I$$ 在 340 到 850 FLOP/byte 之间，都大于 BF16 的 $$I^* = 260$$ FLOP/byte。除 batch 1 的 k、v 外，throughput 在 590 到 795 TFLOP/s，接近 802 的平段。BF16 的 $$F$$ 也要单独测：H100 是 802 TFLOP/s，H200 是 815 TFLOP/s，和 FP16 的 788、756 TFLOP/s 都不同。
-- **decode 接近斜段。** batch 1 时 $$I \approx 1$$ FLOP/byte，batch 8 时 $$I \approx 8$$ FLOP/byte，和第 2 节的计算一致。H100 上 gate、up、down 三个最大的矩阵达到斜段的 80% 以上，q、o 约一半；RTX 4080 上除 k、v 外都达到 94% 以上。
+- **prefill 接近平段。** H100 上 $$I$$ 在 340 到 850 FLOP/byte 之间，都大于 BF16 的 $$I^* = 260$$ FLOP/byte。除 batch 1 的 k、v 外，throughput 在 588 到 794 TFLOP/s，接近 802 的平段。BF16 的 $$F$$ 也要单独测：H100 是 802 TFLOP/s，H200 是 815 TFLOP/s，和 FP16 的 788、756 TFLOP/s 都不同。
+- **decode 接近斜段。** batch 1 时 $$I \approx 1$$ FLOP/byte，batch 8 时 $$I \approx 8$$ FLOP/byte，和第 2 节的计算一致。H100 上 gate、up、down 三个最大的矩阵达到斜段的 80% 以上，q、o 约一半；RTX 4080 上除 k、v 外都达到 93% 以上。
 - **k 和 v 离 roofline 最远。** 它们的输出维度是 512（q 和 o 是 3584），是七个里最小的矩阵，kernel 的 launch overhead 占比最大。
 
 ### decode 每步的时间下界
@@ -298,7 +298,7 @@ $$
 
 ### batch = 1 时的算力利用率
 
-batch = 1 时，一步的运算量很小。除 embedding 外，权重有 14.14 GB ÷ 2 字节 = 70.7 亿个，每个做一次乘加，$$W \approx 141$$ 亿 FLOP。在 H100 上 $$W/F$$ 是 0.018 ms，是带宽下界 4.58 ms 的 1/250。<span class="hl hl-purple">每个权重读进来只做一次乘加，H100 的算力用到不足 1%。</span>
+batch = 1 时，一步的运算量很小。除 embedding 外，权重有 14.14 GB ÷ 2 字节 = 70.7 亿个，每个做一次乘加，$$W \approx 141$$ 亿 FLOP。在 H100 上 $$W/F$$ 是 0.018 ms，不到带宽下界 4.58 ms 的 1/250。<span class="hl hl-purple">每个权重读进来只做一次乘加，H100 的算力用到不足 1%。</span>
 
 公式指出了办法。batch 为 $$b$$ 时，每步送进 $$b$$ 个 token，$$M = b$$：权重仍然每步读一遍，$$Q$$ 几乎不变，$$W$$ 变成 $$b$$ 倍，$$I \approx b$$。只要 $$I$$ 还在 ridge point 左边，时间就仍由读权重决定，多生成的 token 几乎不另外花时间，这就是第 5 节斜段上“多算几行不另外花时间”。只看权重的话，H100 BF16 的 $$I^* = 260$$ FLOP/byte，batch 到两百多之前都是这样；每个请求的 KV cache 也要每步读一遍，batch 和 prompt 大了以后不能再忽略。
 
@@ -306,9 +306,9 @@ batch = 1 时，一步的运算量很小。除 embedding 外，权重有 14.14 G
 
 ![decode 时间与带宽下界](figures/fig7-decode.png)
 
-***图 7：prompt 为 128 token 时，batch 从 1 增大到 16，每步时间增加 8% 到 23%。**三张卡 decode 每步的时间随 batch 的变化，虚线是各自的带宽下界。*
+***图 7：prompt 为 128 token 时，batch 从 1 增大到 16，每步时间增加 8% 到 24%。**三张卡 decode 每步的时间随 batch 的变化，虚线是各自的带宽下界。*
 
-batch 从 1 增大到 16，每步多生成 15 个 token，H100 每步时间增加 8%（11.56 → 12.50 ms），RTX 4080 增加 23%（24.3 → 30.0 ms），<span class="hl hl-purple">平均到每个 token 的时间都降了一个数量级</span>。RTX 4080 多出的 23% 本文没有逐个 kernel 拆分；H200 在 batch 16 时略快于 batch 1，差别在测量波动之内。
+batch 从 1 增大到 16，每步多生成 15 个 token，H100 每步时间增加 8%（11.56 → 12.50 ms），RTX 4080 增加 24%（24.3 → 30.0 ms），<span class="hl hl-purple">平均到每个 token 的时间都降了一个数量级</span>。RTX 4080 多出的 24% 本文没有逐个 kernel 拆分；H200 在 batch 16 时略快于 batch 1，差别在测量波动之内。
 
 这个收益随 prompt 变长而变小。H100 上 batch 从 1 增大到 16，prompt 为 1024 token 时每步时间增加 93%（11.49 → 22.14 ms），4096 token 时变成 4.4 倍（12.55 → 54.81 ms）；平均到每个 token，时间分别降到 1/8 和 1/3.7。原因是每个请求的 KV cache 每步都要读一遍，它的大小和 batch 与 prompt 长度的乘积成正比，prompt 长时不能再忽略。
 
@@ -316,7 +316,7 @@ batch 从 1 增大到 16，每步多生成 15 个 token，H100 每步时间增�
 
 表 7 里，RTX 4080 贴近下界，读权重占了每步时间的 88%；H100 和 H200 的实测是下界的 2.5 到 3.6 倍。如果多出的时间也花在搬数据上，带宽多 39% 的 H200 应该更快，实测两张卡几乎一样（11.56 对 11.86 ms）。<span class="hl">所以多出的时间花在搬数据之外。</span>
 
-最可能的原因是 CPU 发出 kernel 的速度。一步要发出几百个 kernel（28 层，每层十几个），CPU 发出每个 kernel 都要花一段时间。H100 和 H200 上许多 kernel 执行得比 CPU 发出下一个还快，GPU 就要空等；RTX 4080 读权重本身就慢，CPU 来得及提前发出后面的 kernel，空等就少。vLLM 等推理框架用 CUDA Graph 把一步的 kernel 一次提交，就是为了去掉这部分开销。H100 多出的约 7 ms、H200 多出的约 8.6 ms 具体花在哪里，要用 profiler 看 kernel 之间的空隙才能确认。
+最可能的原因是 CPU 发出 kernel 的速度。一步要发出一千多个 kernel（28 层，每层约 44 个），CPU 发出每个 kernel 都要花一段时间。H100 和 H200 上许多 kernel 执行得比 CPU 发出下一个还快，GPU 就要空等；RTX 4080 读权重本身就慢，CPU 来得及提前发出后面的 kernel，空等就少。vLLM 等推理框架用 CUDA Graph 把一步的 kernel 一次提交，就是为了去掉这部分开销。H100 多出的约 7 ms、H200 多出的约 8.6 ms 具体花在哪里，要用 profiler 看 kernel 之间的空隙才能确认。
 
 ## 7. 模型的适用范围
 

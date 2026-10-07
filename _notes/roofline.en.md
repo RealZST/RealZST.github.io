@@ -183,7 +183,7 @@ $$R$$ runs from 1 to 2048, and the arrays read and written total 512 MiB, much l
 - **Slope**: the time is about that of moving 512 MiB; doubling $$R$$ doubles the work, keeps the time, and doubles throughput.
 - **Flat part**: the compute units are fully loaded; doubling $$R$$ doubles the time too, and throughput stays constant.
 - **Rounded corner near the ridge point**: measured values fall below the dashed line, because data movement and arithmetic cannot fully overlap.
-- **Some slopes sit lower**: for V100 in FP32 and FP64, and for A100, H100 and H200 in FP64, this kernel uses 53% to 64% of memory bandwidth; elsewhere it uses over 90%. This comes from how the kernel is written and does not affect the height of the flat part.
+- **Some slopes sit lower**: for V100 in FP32 and FP64, and for A100, H100 and H200 in FP64, this kernel uses 53% to 66% of memory bandwidth; elsewhere it mostly uses 88% or more. This comes from how the kernel is written and does not affect the height of the flat part.
 
 The height of the FMA sweep's flat part is the $$F$$ of the ordinary arithmetic units (CUDA Cores on NVIDIA GPUs):
 
@@ -267,8 +267,8 @@ Nsight Compute (NVIDIA's kernel profiler, which reads hardware counters) measure
 
 <figure class="fig fig-wide"><img src="{{ '/assets/notes/roofline/fig6-operators.png' | relative_url }}" alt="Linear layers of the model on the roofline" loading="lazy"><figcaption><strong>Figure 6: All prefill points are right of the ridge point, and all decode points are under the slope.</strong> The seven linear layers of Qwen2.5-7B layer 14 (BF16) on each GPU's BF16 roofline. Top row prefill, bottom row decode; columns H100, H200, RTX 4080. Circles, squares and triangles: batch 1 / 1024-token prompt, batch 8 / 1024 tokens, batch 8 / 4096 tokens; $$M$$ is the batch times the prompt length for prefill, and the batch for decode. RTX 4080's 16 GB of memory cannot hold these two prompts at batch 8, so it was measured at batch 1.</figcaption></figure>
 
-- **prefill is close to the flat part.** On H100, $$I$$ is 340 to 850 FLOP/byte, all above the BF16 $$I^* = 260$$ FLOP/byte. Except k and v at batch 1, throughput is 590 to 795 TFLOP/s, close to the flat part at 802. BF16 $$F$$ is measured separately: 802 TFLOP/s on H100 and 815 TFLOP/s on H200, versus 788 and 756 TFLOP/s in FP16.
-- **decode is close to the slope.** $$I \approx 1$$ FLOP/byte at batch 1 and $$I \approx 8$$ FLOP/byte at batch 8, as computed in Section 2. On H100, the three largest matrices, gate, up and down, reach over 80% of the slope and q and o about half; on RTX 4080, all but k and v reach over 94%.
+- **prefill is close to the flat part.** On H100, $$I$$ is 340 to 850 FLOP/byte, all above the BF16 $$I^* = 260$$ FLOP/byte. Except k and v at batch 1, throughput is 588 to 794 TFLOP/s, close to the flat part at 802. BF16 $$F$$ is measured separately: 802 TFLOP/s on H100 and 815 TFLOP/s on H200, versus 788 and 756 TFLOP/s in FP16.
+- **decode is close to the slope.** $$I \approx 1$$ FLOP/byte at batch 1 and $$I \approx 8$$ FLOP/byte at batch 8, as computed in Section 2. On H100, the three largest matrices, gate, up and down, reach over 80% of the slope and q and o about half; on RTX 4080, all but k and v reach over 93%.
 - **k and v are farthest from the roofline.** Their output dimension is 512 (3584 for q and o), the smallest of the seven, so launch overhead takes the largest share.
 
 ### Lower bound on time per decode step
@@ -293,7 +293,7 @@ The decode times below come from running the model step by step in Hugging Face 
 
 ### Compute utilization at batch = 1
 
-At batch = 1, the work per step is small. Excluding the embedding, there are 14.14 GB ÷ 2 bytes = 7.07 billion weights, each doing one multiply-add, so $$W \approx 14.1$$ billion FLOP. On H100, $$W/F$$ is 0.018 ms, 1/250 of the 4.58 ms bandwidth bound. <span class="hl hl-purple">Each weight read is used for one multiply-add, and less than 1% of H100's compute is used.</span>
+At batch = 1, the work per step is small. Excluding the embedding, there are 14.14 GB ÷ 2 bytes = 7.07 billion weights, each doing one multiply-add, so $$W \approx 14.1$$ billion FLOP. On H100, $$W/F$$ is 0.018 ms, less than 1/250 of the 4.58 ms bandwidth bound. <span class="hl hl-purple">Each weight read is used for one multiply-add, and less than 1% of H100's compute is used.</span>
 
 The formula shows how to change this. At batch $$b$$, each step feeds in $$b$$ tokens and $$M = b$$: the weights are still read once per step, so $$Q$$ barely changes, while $$W$$ grows $$b$$-fold and $$I \approx b$$. While $$I$$ is left of the ridge point, reading the weights still sets the time, and the extra tokens take almost no extra time: this is Section 5's "a few more rows take no extra time" on the slope.
 
@@ -301,9 +301,9 @@ Counting the weights alone, H100 BF16 has $$I^* = 260$$ FLOP/byte, so this holds
 
 The measurements agree. In the bottom row of Figure 6, as the batch goes from 1 to 8, the decode points move along the slope from $$I \approx 1$$ to $$I \approx 8$$ FLOP/byte and throughput rises. Figure 7 shows the time per step against batch.
 
-<figure class="fig"><img src="{{ '/assets/notes/roofline/fig7-decode.png' | relative_url }}" alt="Decode time and bandwidth bound" loading="lazy"><figcaption><strong>Figure 7: With a 128-token prompt, raising the batch from 1 to 16 lengthens each step by 8% to 23%.</strong> Time per decode step vs batch on three GPUs; dashed lines: bandwidth bounds.</figcaption></figure>
+<figure class="fig"><img src="{{ '/assets/notes/roofline/fig7-decode.png' | relative_url }}" alt="Decode time and bandwidth bound" loading="lazy"><figcaption><strong>Figure 7: With a 128-token prompt, raising the batch from 1 to 16 lengthens each step by 8% to 24%.</strong> Time per decode step vs batch on three GPUs; dashed lines: bandwidth bounds.</figcaption></figure>
 
-From batch 1 to 16, each step generates 15 more tokens, while the time per step rises 8% on H100 (11.56 → 12.50 ms) and 23% on RTX 4080 (24.3 → 30.0 ms); <span class="hl hl-purple">the time per token drops by an order of magnitude on both</span>. This post does not break RTX 4080's extra 23% down by kernel; H200 at batch 16 is slightly faster than at batch 1, within measurement noise.
+From batch 1 to 16, each step generates 15 more tokens, while the time per step rises 8% on H100 (11.56 → 12.50 ms) and 24% on RTX 4080 (24.3 → 30.0 ms); <span class="hl hl-purple">the time per token drops by an order of magnitude on both</span>. This post does not break RTX 4080's extra 24% down by kernel; H200 at batch 16 is slightly faster than at batch 1, within measurement noise.
 
 This gain shrinks as the prompt grows. On H100, from batch 1 to 16, the time per step rises 93% with a 1024-token prompt (11.49 → 22.14 ms) and 4.4-fold with a 4096-token prompt (12.55 → 54.81 ms); per token, it falls to 1/8 and 1/3.7 respectively. Each request's KV cache is read every step, and its size is proportional to the batch times the prompt length, so with long prompts it can no longer be ignored.
 
@@ -311,7 +311,7 @@ This gain shrinks as the prompt grows. On H100, from batch 1 to 16, the time per
 
 In Table 7, RTX 4080 is near its bound, with weight reads taking 88% of each step; H100 and H200 measure 2.5 to 3.6 times their bound. If the extra time also went to moving data, H200, with 39% more bandwidth, would be faster; the two measure almost the same (11.56 vs 11.86 ms). <span class="hl">So the extra time is spent outside data movement.</span>
 
-The most likely cause is how fast the CPU issues kernels. A step issues several hundred kernels (28 layers, a dozen or so each), and each issue takes CPU time. On H100 and H200, many kernels finish before the CPU can issue the next, so the GPU waits idle; on RTX 4080, reading the weights is slow, the CPU has time to issue later kernels early, and the GPU waits less.
+The most likely cause is how fast the CPU issues kernels. A step issues over a thousand kernels (28 layers, about 44 each), and each issue takes CPU time. On H100 and H200, many kernels finish before the CPU can issue the next, so the GPU waits idle; on RTX 4080, reading the weights is slow, the CPU has time to issue later kernels early, and the GPU waits less.
 
 Inference frameworks such as vLLM use CUDA Graphs to submit a step's kernels at once, to remove this cost. Where H100's extra 7 ms or so and H200's 8.6 ms go can be confirmed from the gaps between kernels in a profiler.
 
