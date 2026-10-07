@@ -60,7 +60,8 @@ img { max-width: 100%; height: auto; display: block; }
   padding: 0 var(--frame-pad-x) 44px;
 }
 
-.section > h2 {
+.section > h2,
+.section > .notes-head > h2 {
   font-family: var(--font-mono);
   font-size: var(--fs-section);
   text-transform: uppercase;

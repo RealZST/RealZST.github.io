@@ -1,13 +1,261 @@
 ---
 layout: default
 ---
-<section class="section note-page content-col">
-  <a class="back-link" href="{{ '/notes/' | relative_url }}">← all notes</a>
+{%- assign pair = site.notes | where: "slug", page.slug -%}
+<section class="section note-page">
+  <div class="note-topbar">
+    <a class="back-link" href="{{ '/notes/' | relative_url }}{% if page.lang == 'zh' %}?lang=zh{% endif %}">{% if page.lang == 'zh' %}← 全部笔记{% else %}← all notes{% endif %}</a>
+    <span class="lang-switch">
+      {%- for n in pair -%}
+        {%- if n.lang != page.lang -%}
+          <a href="{{ n.url | relative_url }}" lang="{{ n.lang }}">{% if n.lang == 'zh' %}中文版{% else %}English version{% endif %}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </span>
+  </div>
   <h1 class="note-header">{{ page.title }}</h1>
   <div class="note-meta">
-    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m' }}</time>
+    {%- if page.lang == 'zh' %} · 中文 {% else %} · English {% endif -%}
   </div>
+  <details class="toc-inline" id="toc-inline">
+    <summary>{% if page.lang == 'zh' %}目录{% else %}Contents{% endif %}</summary>
+    <ol class="toc-list"></ol>
+  </details>
   <article class="note-body">
     {{ content }}
   </article>
 </section>
+<nav class="toc-side" aria-label="{% if page.lang == 'zh' %}目录{% else %}Contents{% endif %}">
+  <div class="toc-title">{% if page.lang == 'zh' %}目录{% else %}Contents{% endif %}</div>
+  <ol class="toc-list"></ol>
+</nav>
+<button class="toc-fab" id="toc-fab" type="button" aria-label="{% if page.lang == 'zh' %}目录{% else %}Contents{% endif %}">≡</button>
+<dialog class="toc-sheet" id="toc-sheet" aria-label="{% if page.lang == 'zh' %}目录{% else %}Contents{% endif %}">
+  <div class="toc-sheet-inner" tabindex="-1" autofocus>
+    <div class="toc-title">{% if page.lang == 'zh' %}目录{% else %}Contents{% endif %}</div>
+    <ol class="toc-list"></ol>
+  </div>
+</dialog>
+
+<dialog class="lightbox" id="lightbox" aria-label="Figure viewer">
+  <button class="lb-btn lb-close" type="button" aria-label="Close">×</button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous figure">‹</button>
+  <button class="lb-btn lb-next" type="button" aria-label="Next figure">›</button>
+  <figure class="lb-figure">
+    <img class="lb-img" src="" alt="">
+    <figcaption class="lb-caption"></figcaption>
+  </figure>
+</dialog>
+
+<script>
+  // Table of contents: built from the h2 headings. On wide screens it stays in
+  // the right margin. On narrow screens a collapsed list sits under the title,
+  // and once the reader scrolls down, a button in the bottom-right corner opens
+  // the same list as a popover just above it.
+  (function () {
+    var heads = Array.prototype.slice.call(document.querySelectorAll(".note-body h2, .note-body h3"));
+    if (!heads.length) return;
+    heads.forEach(function (h, i) { if (!h.id) h.id = "sec-" + (i + 1); });
+    // Sections (h2) with their subsections (h3) nested underneath.
+    var lists = document.querySelectorAll(".toc-list");
+    lists.forEach(function (ol) {
+      var sub = null;
+      heads.forEach(function (h) {
+        var li = document.createElement("li"), a = document.createElement("a");
+        a.href = "#" + h.id; a.textContent = h.textContent; a.dataset.target = h.id;
+        li.appendChild(a);
+        if (h.tagName === "H3" && sub) { sub.appendChild(li); return; }
+        ol.appendChild(li);
+        sub = document.createElement("ol"); sub.className = "toc-sub"; li.appendChild(sub);
+      });
+      ol.querySelectorAll(".toc-sub:empty").forEach(function (e) { e.remove(); });
+    });
+    var sheet = document.getElementById("toc-sheet"), fab = document.getElementById("toc-fab");
+    if (sheet && sheet.showModal) {
+      fab.addEventListener("click", function () { sheet.showModal(); });
+      sheet.addEventListener("click", function (e) { if (e.target === sheet || e.target.tagName === "A") sheet.close(); });
+    }
+    var inline = document.getElementById("toc-inline");
+    if (inline) inline.addEventListener("click", function (e) { if (e.target.tagName === "A") inline.open = false; });
+    // Hide the button near the top of the page, where the inline list is visible.
+    function toggleFab() { if (fab) fab.classList.toggle("is-visible", window.scrollY > 600); }
+    window.addEventListener("scroll", toggleFab, { passive: true }); toggleFab();
+    // Scroll-spy: the heading closest above the viewport's upper third is current.
+    function spy() {
+      var y = window.scrollY + window.innerHeight * 0.3, current = heads[0].id;
+      heads.forEach(function (h) { if (h.offsetTop <= y) current = h.id; });
+      document.querySelectorAll(".toc-list a").forEach(function (a) { a.classList.toggle("is-current", a.dataset.target === current); });
+    }
+    window.addEventListener("scroll", spy, { passive: true }); window.addEventListener("load", spy); spy();
+  })();
+
+  // Figure viewer: click a figure to open it full size; arrows browse; Esc or backdrop closes.
+  (function () {
+    var box = document.getElementById("lightbox");
+    if (!box || !box.showModal) return;
+    var figs = Array.prototype.slice.call(document.querySelectorAll(".note-body figure.fig img"));
+    var img = box.querySelector(".lb-img"), cap = box.querySelector(".lb-caption"), current = 0;
+    function show(i) {
+      current = (i + figs.length) % figs.length;
+      var p = figs[current];
+      img.src = p.src; img.alt = p.alt;
+      var c = p.closest("figure").querySelector("figcaption");
+      cap.textContent = c ? c.textContent : "";
+    }
+    figs.forEach(function (p, i) { p.addEventListener("click", function () { show(i); box.showModal(); }); });
+    box.querySelector(".lb-close").addEventListener("click", function () { box.close(); });
+    box.querySelector(".lb-prev").addEventListener("click", function () { show(current - 1); });
+    box.querySelector(".lb-next").addEventListener("click", function () { show(current + 1); });
+    box.addEventListener("click", function (e) { if (e.target === box) box.close(); });
+    box.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") show(current - 1);
+      if (e.key === "ArrowRight") show(current + 1);
+    });
+  })();
+
+  // Hand-drawn annotations. The author picks a side in the markup (ann-w: label
+  // to the right of the target, ann-e: to the left, ann-n: below). If that side
+  // has no room on the current layout, fall back to "below" and shift the label
+  // so it stays inside the text column.
+  function fitAnnotations() {
+    var body = document.querySelector(".note-body");
+    if (!body) return;
+    var bodyBox = body.getBoundingClientRect();
+    var sides = ["ann-n", "ann-ne", "ann-e", "ann-se", "ann-s", "ann-sw", "ann-w", "ann-nw"];
+    // Floated figures narrow the usable width next to them.
+    var floats = Array.prototype.slice.call(body.querySelectorAll("figure.fig")).map(function (f) {
+      return { side: getComputedStyle(f).cssFloat, r: f.getBoundingClientRect() };
+    }).filter(function (f) { return f.side === "left" || f.side === "right"; });
+    // Width of the label (::after). Safari reports "max-content" instead of a
+    // pixel value for it, so measure a throwaway span with the same styling.
+    function labelWidth(el) {
+      var cs = getComputedStyle(el, "::after");
+      if (/px$/.test(cs.width) && parseFloat(cs.width) > 0) return parseFloat(cs.width);
+      var m = document.createElement("span");
+      m.textContent = el.dataset.note;
+      m.style.cssText = "position:absolute;left:0;top:0;visibility:hidden;width:max-content;white-space:nowrap;line-height:1.05;";
+      m.style.maxWidth = getComputedStyle(el).getPropertyValue("--ann-label-max-width") || cs.maxWidth;
+      m.style.fontFamily = cs.fontFamily; m.style.fontSize = cs.fontSize; m.style.fontWeight = cs.fontWeight;
+      document.body.appendChild(m);
+      var w = m.getBoundingClientRect().width;
+      m.remove();
+      return w;
+    }
+    function usableBox(rect) {
+      var b = { left: bodyBox.left, right: bodyBox.right };
+      floats.forEach(function (f) {
+        if (f.r.bottom < rect.top - 90 || f.r.top > rect.bottom + 90) return;
+        if (f.side === "right") b.right = Math.min(b.right, f.r.left - 10);
+        else b.left = Math.max(b.left, f.r.right + 10);
+      });
+      return b;
+    }
+    // An annotated span never breaks. When it wraps to a new line, justified
+    // text would stretch the line above it; a forced break before the span
+    // makes that line end like a paragraph's last line instead.
+    body.querySelectorAll("br.ann-break").forEach(function (b) { b.remove(); });
+    body.querySelectorAll(".ann[data-note]").forEach(function (el) {
+      var blk = el.closest("p, li"), prev = el.previousSibling;
+      if (!blk || !prev) return;
+      var cs = getComputedStyle(blk), left = blk.getBoundingClientRect().left + parseFloat(cs.paddingLeft);
+      if (Math.abs(el.getBoundingClientRect().left - left) < 2) {
+        var br = document.createElement("br"); br.className = "ann-break";
+        el.parentNode.insertBefore(br, el);
+      }
+    });
+    body.querySelectorAll(".ann[data-note]").forEach(function (el) {
+      if (!el.dataset.side) el.dataset.side = sides.filter(function (s) { return el.classList.contains(s); })[0] || "ann-n";
+      sides.forEach(function (s) { el.classList.remove(s); });
+      el.style.setProperty("--ann-text-x", "0px");
+      el.style.setProperty("--ann-arrow-x", "0px");
+      el.classList.add(el.dataset.side);
+      var w = labelWidth(el);
+      var rects = el.getClientRects();
+      var last = rects[rects.length - 1] || el.getBoundingClientRect();
+      var box = usableBox(last);
+      var fits = true;
+      if (el.dataset.side === "ann-w") fits = rects.length === 1 && last.right + 60 + w <= box.right;
+      else if (el.dataset.side === "ann-e") fits = rects.length === 1 && last.left - 60 - w >= box.left;
+      if (!fits) { el.classList.remove(el.dataset.side); el.classList.add("ann-n"); }
+      if (el.classList.contains("ann-n")) {
+        var center = rects.length > 1 ? (last.left + last.right) / 2 : (last.left + last.right) / 2;
+        var shift = 0;
+        if (center - w / 2 < box.left + 4) shift = box.left + 4 - (center - w / 2);
+        if (center + w / 2 > box.right - 4) shift = box.right - 4 - (center + w / 2);
+        el.style.setProperty("--ann-text-x", Math.round(shift) + "px");
+        el.style.setProperty("--ann-arrow-x", Math.round(shift / 2) + "px");
+      }
+    });
+  }
+  window.addEventListener("load", fitAnnotations);
+  window.addEventListener("resize", fitAnnotations);
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.querySelector(".note-body"), {
+        delimiters: [
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "$$", right: "$$", display: false }
+        ],
+        throwOnError: false
+      });
+    }
+    noWidows();
+    fitAnnotations();
+  });
+
+  // No widows: glue the last few characters (a formula counts as one) of each
+  // paragraph, list item and caption with word joiners, so the last line never
+  // holds just a character or two. English glues the last two words instead.
+  function noWidows() {
+    var WJ = "\u2060", zh = document.documentElement.lang === "zh";
+    // Rendered math is an atomic box, so the browser may break between it and
+    // the punctuation after it; keep that punctuation on the formula's line.
+    document.querySelectorAll(".note-body .katex").forEach(function (k) {
+      // auto-render wraps each formula in its own span
+      var host = k.parentNode.childNodes.length === 1 ? k.parentNode : k, t = host.nextSibling;
+      if (!t || t.nodeType !== 3 || !/^[，。、；：）！？,.;:)!?]/.test(t.data)) return;
+      var box = document.createElement("span");
+      box.style.whiteSpace = "nowrap";
+      host.parentNode.insertBefore(box, host);
+      box.appendChild(host);
+      if (t.data.length > 1) t.splitText(1);
+      box.appendChild(t);
+    });
+    document.querySelectorAll(".note-body p, .note-body li, .note-body figcaption, .note-body td").forEach(function (el) {
+      if (el.querySelector("p, ul, ol")) return;
+      // Units from the end: single characters of text nodes, or whole atoms
+      // (rendered math, annotated spans).
+      var units = [];
+      (function walk(node) {
+        for (var c = node.lastChild; c && units.length < 8; c = c.previousSibling) {
+          if (c.nodeType === 3) {
+            for (var i = c.data.length - 1; i >= 0 && units.length < 8; i--) {
+              if (c.data[i] === WJ) continue;
+              units.push({ node: c, offset: i });
+            }
+          } else if (c.nodeType === 1) {
+            if (c.classList.contains("katex") || c.classList.contains("ann")) units.push({ atom: c });
+            else walk(c);
+          }
+        }
+      })(el);
+      if (zh) {
+        // Join the last five units: no break before units 0..3. A space among
+        // them becomes a no-break space.
+        for (var k = 0; k < Math.min(4, units.length - 1); k++) {
+          var u = units[k];
+          if (u.atom) { u.atom.parentNode.insertBefore(document.createTextNode(WJ), u.atom); continue; }
+          if (u.node.data[u.offset] === " ") u.node.replaceData(u.offset, 1, "\u00a0");
+          u.node.insertData(u.offset, WJ);
+        }
+      } else {
+        for (var j = 0; j < units.length; j++) {
+          var v = units[j];
+          if (v.node && v.node.data[v.offset] === " " && j > 1) { v.node.replaceData(v.offset, 1, "\u00a0"); break; }
+        }
+      }
+    });
+  }
+</script>

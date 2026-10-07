@@ -1,21 +1,54 @@
 ---
 layout: default
 ---
-<section class="section notes-page content-col">
-  <h2>Notes</h2>
-  <p class="intro">{{ content | markdownify }}</p>
-  {% assign sorted_notes = site.notes | sort: 'date' | reverse %}
-  {% if sorted_notes.size > 0 %}
+<section class="section notes-page content-col" id="notes-page" data-lang="en">
+  <div class="notes-head">
+    <h2>Notes</h2>
+    <span class="notes-lang" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en">English</button>
+      <button type="button" data-set-lang="zh" lang="zh">中文</button>
+    </span>
+  </div>
+  <p class="intro" data-lang="en">{{ content | markdownify | strip_html }}</p>
+  <p class="intro" data-lang="zh" lang="zh">{{ page.intro_zh }}</p>
+  {% assign groups = site.notes | sort: 'date' | reverse | group_by: "slug" %}
+  {% if groups.size > 0 %}
     <ul class="note-list">
-      {% for note in sorted_notes %}
-        <li class="note-item">
-          <span class="note-date">{{ note.date | date: '%Y.%m.%d' }}</span>
-          <a class="note-title" href="{{ note.url | relative_url }}">{{ note.title }}</a>
-          {% if note.summary %}<p class="note-summary">{{ note.summary }}</p>{% endif %}
-        </li>
+      {% for g in groups %}
+        {% assign en = g.items | where: "lang", "en" | first %}
+        {% assign zh = g.items | where: "lang", "zh" | first %}
+        {%- comment -%} One entry per language; a note without a translation shows its only version in both. {%- endcomment -%}
+        {% assign langs = "en,zh" | split: "," %}
+        {% for l in langs %}
+          {% if l == "en" %}{% assign n = en | default: zh %}{% else %}{% assign n = zh | default: en %}{% endif %}
+          <li class="note-item" data-lang="{{ l }}">
+            <span class="note-date">{{ n.date | date: '%Y.%m' }}</span>
+            <a class="note-title" href="{{ n.url | relative_url }}" lang="{{ n.lang }}">{{ n.title }}</a>
+            {% if n.summary %}<p class="note-summary" lang="{{ n.lang }}">{{ n.summary }}</p>{% endif %}
+          </li>
+        {% endfor %}
       {% endfor %}
     </ul>
   {% else %}
-    <p class="notes-empty">Coming soon — technical writing on systems, DRL, and the messy space between them. Expect short-form posts on harnesskit design decisions, inference-engine internals, and DRL-to-systems crossovers.</p>
+    <p class="notes-empty">Nothing here yet.</p>
   {% endif %}
 </section>
+<script>
+  // Language of the list: ?lang=zh|en, else the last choice, else English.
+  (function () {
+    var page = document.getElementById("notes-page");
+    function set(lang, remember) {
+      page.dataset.lang = lang;
+      page.querySelectorAll("[data-set-lang]").forEach(function (b) {
+        b.setAttribute("aria-pressed", b.dataset.setLang === lang ? "true" : "false");
+      });
+      if (remember) { try { localStorage.setItem("notes-lang", lang); } catch (e) {} }
+    }
+    var q = new URLSearchParams(location.search).get("lang"), saved = null;
+    try { saved = localStorage.getItem("notes-lang"); } catch (e) {}
+    set(q === "zh" || q === "en" ? q : (saved === "zh" ? "zh" : "en"), false);
+    page.querySelectorAll("[data-set-lang]").forEach(function (b) {
+      b.addEventListener("click", function () { set(b.dataset.setLang, true); });
+    });
+  })();
+</script>

@@ -95,6 +95,7 @@ include:
   - _pages
 
 exclude:
+  - scripts/
   - Gemfile
   - Gemfile.lock
   - vendor
