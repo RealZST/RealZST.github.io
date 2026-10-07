@@ -1,8 +1,8 @@
 ---
 layout: notes
-title: notes
+title: Notes
 permalink: /notes/
-published: false
+intro_zh: LLM Infra 笔记。
 ---
 
-Short-form writing. No schedule.
+Notes on LLM Infra.
