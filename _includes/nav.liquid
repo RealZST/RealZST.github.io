@@ -16,7 +16,7 @@
     {%- if site.xiaohongshu_userid -%}
       <a href="https://www.xiaohongshu.com/user/profile/{{ site.xiaohongshu_userid }}" target="_blank" rel="noopener" aria-label="Xiaohongshu (RedNote)" title="Xiaohongshu (RedNote)">{% include icons/xiaohongshu.svg %}</a>
     {%- endif -%}
-    <a href="{{ '/notes/' | relative_url }}" class="nav-notes{% if page.url contains '/notes/' %} is-active{% endif %}" aria-label="Notes" title="Notes">{% include icons/notes.svg %}</a>
+    <a href="{{ '/notes/' | relative_url }}" class="nav-notes nav-text{% if page.url contains '/notes/' %} is-active{% endif %}" title="Notes">Notes</a>
   </div>
 </nav>
 <script>
