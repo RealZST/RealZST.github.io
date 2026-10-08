@@ -42,7 +42,6 @@
   font-size: 13.5px;
   color: var(--color-muted);
   margin: 4px 0 0;
-  text-wrap: pretty; // no single word on the last line
 }
 
 // ---- Single note ----
@@ -471,13 +470,13 @@ html[lang="en"] .note-body figure.fig figcaption { text-align: left; hyphens: ma
   background: none;
   border: none;
   padding: 2px 0 2px 12px;
-  color: var(--color-muted);
+  color: var(--color-primary);
   cursor: pointer;
 }
-// The selected language is dark like the text; the other one is muted and
-// turns orange on hover.
+// The selected language is dark like the text; the other one is orange,
+// like a link.
 .notes-lang button[aria-pressed="true"] { color: var(--color-text); }
-.notes-lang button:not([aria-pressed="true"]):hover { color: var(--color-primary); }
+.notes-lang button:not([aria-pressed="true"]):hover { text-decoration: underline; text-underline-offset: 3px; }
 .notes-page[data-lang="en"] [data-lang="zh"],
 .notes-page[data-lang="zh"] [data-lang="en"] { display: none; }
 

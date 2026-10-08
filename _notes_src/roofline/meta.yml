@@ -5,6 +5,6 @@ zh:
   summary: "用八种 GPU 上的实测数据讲 arithmetic intensity、硬件峰值怎么测、roofline 图怎么读，以及 LLM 推理的 prefill 与 decode 落在哪里。"
 en:
   title: "The Roofline Model, Starting from Measured Data"
-  summary: "Arithmetic intensity, how to measure the hardware peaks, how to read a roofline plot, and where LLM prefill and decode land, using measurements from eight GPUs."
+  summary: "Arithmetic intensity, measuring hardware peaks, reading a roofline plot, and where LLM prefill and decode land, using measurements from eight GPUs."
 # Multi-panel figures: shown at the full text width; the others at half width.
 wide_figures: [fig1-roofline-fp16.png, fig3-fma-sweep.png, fig4-h100-roofline.png, fig6-operators.png, fig9-rtx4080-fp64.png]

@@ -4,7 +4,7 @@ title: "The Roofline Model, Starting from Measured Data"
 date: 2026-10-07
 lang: en
 slug: roofline
-summary: "Arithmetic intensity, how to measure the hardware peaks, how to read a roofline plot, and where LLM prefill and decode land, using measurements from eight GPUs."
+summary: "Arithmetic intensity, measuring hardware peaks, reading a roofline plot, and where LLM prefill and decode land, using measurements from eight GPUs."
 permalink: /notes/roofline/
 ---
 <div class="summary" markdown="1">
