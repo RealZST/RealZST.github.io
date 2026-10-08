@@ -4,7 +4,8 @@
 #   bash scripts/build-note.sh roofline [/path/to/llm-infra-notes]
 #
 # Sources: _notes_src/<slug>/{post.zh.md,post.en.md,meta.yml} in this repository,
-# and the figures in <llm-infra-notes>/<slug>/figures/ (the experiment repository).
+# and, for a note with figures, <llm-infra-notes>/<slug>/figures/ (the experiment
+# repository).
 # Writes _notes/<slug>.zh.md, _notes/<slug>.en.md and the figures the note uses to
 # assets/notes/<slug>/.
 # Nothing is committed.
@@ -14,8 +15,7 @@ SLUG=${1:?note slug}
 EXPERIMENTS=${2:-$HOME/projects/llm-infra-notes}
 SRC="$SITE/_notes_src/$SLUG"
 [[ -f "$SRC/meta.yml" ]] || { echo "missing $SRC/meta.yml" >&2; exit 1; }
-[[ -d "$EXPERIMENTS/$SLUG/figures" ]] || { echo "missing $EXPERIMENTS/$SLUG/figures" >&2; exit 1; }
-mkdir -p "$SITE/_notes" "$SITE/assets/notes/$SLUG"
+mkdir -p "$SITE/_notes"
 python3 - "$SRC" "$SITE" "$SLUG" "$EXPERIMENTS" <<'PY'
 import pathlib, re, shutil, sys
 import yaml
@@ -27,6 +27,10 @@ for lang in ("zh", "en"):
     f = src / f"post.{lang}.md"
     if f.exists():
         used |= set(re.findall(r"\]\(figures/([^)]+)\)", f.read_text()))
+if used:
+    if not figs.is_dir():
+        sys.exit(f"missing {figs}")
+    (site / "assets" / "notes" / slug).mkdir(parents=True, exist_ok=True)
 for name in sorted(used):
     shutil.copy2(figs / name, site / "assets" / "notes" / slug / name)
 meta = yaml.safe_load((src / "meta.yml").read_text())
@@ -54,4 +58,5 @@ for lang in ("zh", "en"):
     out.write_text("\n".join(fm) + body)
     print("wrote", out)
 PY
-echo "figures -> $SITE/assets/notes/$SLUG/"
+[[ -d "$SITE/assets/notes/$SLUG" ]] && echo "figures -> $SITE/assets/notes/$SLUG/"
+exit 0

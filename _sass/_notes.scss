@@ -17,6 +17,10 @@
   border-bottom: 1px solid var(--color-border);
 }
 .note-item:last-child { border-bottom: none; }
+// Each note has an English and a Chinese entry, English first, and only one
+// language shows. The last English entry is therefore second to last.
+.notes-page[data-lang="en"] .note-item[data-lang="en"]:nth-last-child(2) { border-bottom: none; }
+.section.notes-page { padding-bottom: 16px; }
 
 .note-date {
   font-family: var(--font-mono);
@@ -473,3 +477,343 @@ html[lang="en"] .note-body figure.fig figcaption { text-align: left; hyphens: ma
 .notes-lang button:hover { color: var(--color-text); }
 .notes-page[data-lang="en"] [data-lang="zh"],
 .notes-page[data-lang="zh"] [data-lang="en"] { display: none; }
+
+// ---- Tags: trade-off (solid outline) / removes waste (dashed outline) ----
+// One hue, two shapes, so they do not compete with the quantity colours.
+.note-body { --tag-color: #a35a2c; }
+.note-body .tag {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 0 6px;
+  border: 1px solid var(--tag-color);
+  border-radius: 4px;
+  vertical-align: 0.12em;
+  white-space: nowrap;
+  text-indent: 0;
+  color: var(--tag-color);
+  background: transparent;
+}
+.note-body .tag-waste { border-style: dashed; }
+html[lang="zh"] .note-body .tag { font-family: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }
+
+// ---- Quantity chips (logic-chain note) ----
+// Colour = which cost changes (memory / compute / data movement / outside
+// the three); the word in front = improved (优化) or given up (牺牲).
+.note-body {
+  --q-mem: oklch(0.54 0.1 68);
+  --q-mem-bg: color-mix(in oklch, #ffb000 16%, transparent);
+  --q-calc: oklch(0.46 0.1 155);
+  --q-calc-bg: oklch(0.55 0.1 155 / 0.13);
+  --q-move: oklch(0.45 0.11 250);
+  --q-move-bg: oklch(0.55 0.11 250 / 0.12);
+  --q-other: var(--color-muted);
+  --q-other-bg: color-mix(in oklch, var(--color-muted) 13%, transparent);
+}
+.note-body .q {
+  padding: 1px 6px;
+  border-radius: 4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.note-body .q-mem { color: var(--q-mem); background: var(--q-mem-bg); }
+.note-body .q-calc { color: var(--q-calc); background: var(--q-calc-bg); }
+.note-body .q-move { color: var(--q-move); background: var(--q-move-bg); }
+.note-body .q-other { color: var(--q-other); background: var(--q-other-bg); }
+.note-body .q .katex { color: inherit; }
+
+// Reference lists read better unjustified.
+.note-body h2#sources + ul li { text-align: left; }
+
+// ---- Logic chain (logic-chain note) ----
+// A rail on the left runs through the whole chain. Each row is a block of
+// reasoning, whose question sits on an arrow on the rail, and then a card,
+// whose title sits on a dot. A card gives 问题 / 做法 and one line per
+// technique of what it improves and gives up.
+.note-body .lc-lead { color: var(--color-muted); text-align: left; }
+.note-body .lc-lead b { color: var(--color-text); }
+.note-body .lc-map {
+  --rail: #e2d5bd;
+  --mark: var(--color-primary);
+  --card: #fffdf8;
+  --card-border: #e8dfcd;
+  --gutter: 40px;
+  --rx: -22px;      // rail centre, relative to the left edge of the content
+  --rowgap: 52px;
+  --edge-gap: 22px; // reasoning block to card
+  --dot-top: 25px;  // dot centre, from the top of the card
+  position: relative;
+  margin: 36px 0 64px;
+  padding-left: var(--gutter);
+}
+.note-body .lc-row { position: relative; margin: 0 0 var(--rowgap); }
+.note-body .lc-row:last-child { margin-bottom: 0; }
+// Each row draws its own stretch of rail, down to the next row.
+.note-body .lc-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: calc(-1 * var(--rowgap));
+  left: var(--rx);
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--rail);
+}
+.note-body .lc-row:first-child::before { top: var(--dot-top); }
+// The last stretch stops at the last card's dot.
+.note-body .lc-row:last-child::before { display: none; }
+.note-body .lc-row:last-child .lc-edge::after {
+  content: "";
+  position: absolute;
+  top: 0.6em;
+  bottom: calc(-1 * (var(--edge-gap) + var(--dot-top)));
+  left: var(--rx);
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--rail);
+}
+
+// Reasoning block: an arrow on the rail next to the question.
+.note-body .lc-edge { position: relative; margin: 0 0 var(--edge-gap); }
+.note-body .lc-edge::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0.55em;
+  left: var(--rx);
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--mark);
+}
+.note-body .lc-edge p { text-align: left; }
+.note-body p.lc-q {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.note-body p.lc-num {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+.note-body .lc-formula { margin: 14px 0 6px; text-align: center; font-size: 16px; }
+.note-body .lc-formula .katex-display { margin: 0; }
+.note-body p.lc-wformula { margin: 0; font-weight: 600; text-align: center !important; }
+.note-body .lc-formula p.fnote {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--color-muted);
+}
+.note-body ol.lc-steps {
+  margin: 10px 0 0;
+  padding-left: 1.6em;
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: #4b443a;
+}
+.note-body ol.lc-steps li { margin: 0 0 4px; text-align: left; }
+.note-body ol.lc-steps li::marker { color: var(--mark); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+// Card: a dot on the rail next to the title.
+.note-body .lc-card {
+  position: relative;
+  padding: 16px 22px 18px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: 0 1px 2px rgb(90 70 40 / 0.05), 0 4px 14px rgb(90 70 40 / 0.05);
+}
+.note-body .lc-card::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--dot-top) - 1px);
+  left: calc(var(--rx) - 1px);
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 2.5px solid var(--mark);
+}
+.note-body .lc-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin: 0 0 10px;
+}
+.note-body .lc-head h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.5;
+  scroll-margin-top: 40px;
+}
+.note-body .lc-sub { font-size: 13.5px; color: var(--color-muted); }
+.note-body dl.lc-fact {
+  display: grid;
+  grid-template-columns: 2.4em minmax(0, 1fr);
+  gap: 6px 14px;
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+.note-body .lc-fact dt {
+  padding-top: 0.2em;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-muted-2);
+}
+.note-body .lc-fact dd { margin: 0; }
+.note-body .lc-fact dd p { margin: 0 0 8px; text-align: left; }
+.note-body .lc-fact dd > :last-child { margin-bottom: 0; }
+// The costs a technique changes: tag first, then one chip per cost.
+.note-body .lc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.note-body .lc-chips .tag { margin-right: 2px; }
+.note-body .lc-chips .q { padding: 2px 8px; }
+.note-body .lc-chips .q b { font-weight: 600; margin-right: 6px; }
+// In a card with several techniques, each one is a small block.
+.note-body .lc-tech {
+  margin: 10px 0 0;
+  padding: 10px 14px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+}
+.note-body .lc-fact dd > p + .lc-tech { margin-top: 8px; }
+.note-body .lc-tech-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.note-body .lc-tech-head b { font-size: 15.5px; font-weight: 600; }
+.note-body .lc-fact .lc-tech p { margin: 4px 0 0; font-size: 15px; line-height: 1.7; }
+.note-body .lc-tech .lc-chips { margin-top: 8px; }
+.note-body p.lc-note {
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--color-muted);
+  text-align: left;
+}
+.note-body table.lc-table { margin: 12px 0 0; font-size: 14.5px; }
+.note-body table.lc-table .q { padding: 1px 6px; }
+
+// The three costs, side by side.
+.note-body .lc-costs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--card-border);
+}
+.note-body .lc-cost {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 16px;
+  background: var(--card);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.note-body .lc-cost .en { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.note-body .lc-cost .def { color: var(--color-muted); }
+.note-body .lc-cost .def b { color: var(--color-text); font-weight: 600; }
+.note-body .lc-cost .wall {
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.note-body .lc-cost .wall code { background: none; padding: 0; font-size: 12.5px; color: inherit; }
+.note-body .lc-cost .hw { margin-top: 6px; font-size: 12.5px; line-height: 1.5; color: var(--color-muted-2); }
+.note-body .lc-cost.mem .en { color: var(--q-mem); }
+.note-body .lc-cost.mem .wall { color: var(--q-mem); background: var(--q-mem-bg); }
+.note-body .lc-cost.calc .en { color: var(--q-calc); }
+.note-body .lc-cost.calc .wall { color: var(--q-calc); background: var(--q-calc-bg); }
+.note-body .lc-cost.move .en { color: var(--q-move); }
+.note-body .lc-cost.move .wall { color: var(--q-move); background: var(--q-move-bg); }
+.note-body .lc-thesis {
+  margin: 16px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--card-border);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.note-body .lc-thesis p { margin: 0 0 8px; text-align: left; }
+.note-body .lc-thesis p:last-child { margin-bottom: 0; }
+.note-body .lc-thesis .tag { margin-right: 4px; }
+.note-body .lc-legend { font-size: 13.5px; color: var(--color-muted); }
+.note-body .lc-legend .q { white-space: nowrap; }
+
+// English: the labels (Problem, Solution, Limit) need a wider column.
+html[lang="en"] .note-body dl.lc-fact { grid-template-columns: 4.6em minmax(0, 1fr); }
+html[lang="en"] .note-body .lc-fact dt { letter-spacing: 0.02em; }
+html[lang="en"] .note-body .lc-cost .wall { font-size: 12px; padding: 2px 6px; white-space: nowrap; }
+
+@media (max-width: 560px) {
+  .note-body .lc-map { --gutter: 24px; --rx: -13px; --rowgap: 44px; margin-top: 28px; }
+  .note-body .lc-card { padding: 14px 14px 16px; }
+  .note-body .lc-head h2 { font-size: 18.5px; }
+  .note-body dl.lc-fact { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .note-body .lc-fact dt { padding-top: 8px; }
+  .note-body .lc-fact dt:first-child { padding-top: 0; }
+  .note-body .lc-tech { padding: 10px 12px 12px; }
+  .note-body .lc-costs { grid-template-columns: minmax(0, 1fr); }
+  .note-body ol.lc-steps { font-size: 15px; }
+}
+
+// ---- Recap table (logic-chain note) ----
+// One row per technique, grouped by stage; the chips are the same as in the cards.
+.note-body table.lc-recap { width: 100%; margin: 14px 0 8px; font-size: 14px; line-height: 1.55; }
+.note-body .lc-recap th { font-size: 13px; color: var(--color-muted); white-space: nowrap; }
+.note-body .lc-recap th, .note-body .lc-recap td { padding: 7px 8px; vertical-align: top; }
+.note-body .lc-recap td:first-child { font-weight: 600; white-space: nowrap; }
+.note-body .lc-recap td:nth-child(2) { min-width: 12.5em; color: var(--color-muted); }
+.note-body .lc-recap td:last-child { white-space: nowrap; }
+.note-body .lc-recap .q {
+  display: inline-block;
+  margin: 1px 4px 1px 0;
+  padding: 0 6px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+.note-body .lc-recap tr.lc-stage td {
+  padding-top: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  border-bottom-color: var(--color-accent-deep);
+}
+
+// ---- References (logic-chain note): numbered, one per line, small, linked ----
+.note-body ol.lc-refs {
+  margin: 10px 0 0;
+  padding-left: 2.2em;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+.note-body .lc-refs li { margin: 0 0 6px; padding-left: 0.2em; text-align: left; }
+.note-body .lc-refs li::marker { color: var(--color-muted-2); font-variant-numeric: tabular-nums; }
+.note-body .lc-refs .topic { color: var(--color-text); }
+// English: longer names and chips wrap so the table stays within the text column.
+html[lang="en"] .note-body table.lc-recap { font-size: 13.5px; }
+html[lang="en"] .note-body .lc-recap td:first-child { white-space: normal; min-width: 7.5em; }
+html[lang="en"] .note-body .lc-recap td:nth-child(2) { min-width: 8em; }
+html[lang="en"] .note-body .lc-recap .q { white-space: normal; }

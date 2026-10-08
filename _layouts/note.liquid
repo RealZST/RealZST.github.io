@@ -84,7 +84,9 @@ layout: default
     // Scroll-spy: the heading closest above the viewport's upper third is current.
     function spy() {
       var y = window.scrollY + window.innerHeight * 0.3, current = heads[0].id;
-      heads.forEach(function (h) { if (h.offsetTop <= y) current = h.id; });
+      // Page position, not offsetTop: a heading inside a positioned card
+      // would report its offset within the card.
+      heads.forEach(function (h) { if (h.getBoundingClientRect().top + window.scrollY <= y) current = h.id; });
       document.querySelectorAll(".toc-list a").forEach(function (a) { a.classList.toggle("is-current", a.dataset.target === current); });
     }
     window.addEventListener("scroll", spy, { passive: true }); window.addEventListener("load", spy); spy();

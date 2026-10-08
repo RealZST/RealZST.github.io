@@ -1,0 +1,10 @@
+slug: logic-chain
+date: 2026-10-08
+zh:
+  title: "LLM Infra 的逻辑链"
+  summary: "从 LLM 本身出发，沿一条因果链贯穿训练与推理系统的主要设计：每一步遇到什么问题，怎么解决，优化了哪种开销，牺牲了哪种开销。"
+en:
+  title: "The Logic Chain of LLM Infra"
+  summary: "Starting from the LLM itself, one causal chain through the main designs of training and inference systems: the problem behind each step, how it is solved, which cost it improves and which it sacrifices."
+# No figures: the chain and the summary table are HTML inside the post.
+wide_figures: []
