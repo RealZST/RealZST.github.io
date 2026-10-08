@@ -1,7 +1,7 @@
 {% include head.liquid %}
 <body>
   <div class="frame">
-    {% include nav.liquid %}
+    {% unless page.hide_nav %}{% include nav.liquid %}{% endunless %}
     <main>
       {{ content }}
     </main>

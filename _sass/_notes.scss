@@ -1,38 +1,69 @@
 // _sass/_notes.scss
-.notes-page .intro,
-.note-page .note-meta {
-  color: var(--color-muted);
-  font-size: 13.5px;
+// ---- Notes list ----
+// A top row (back to the home page on the left, language on the right), a
+// large title and the intro, then one entry per note: date, title, summary.
+.notes-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0 0 32px;
   font-family: var(--font-mono);
-  margin: -6px 0 22px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.notes-back {
+  color: var(--color-muted);
+  text-transform: uppercase;
+  border-bottom: none;
+}
+.notes-back:hover { color: var(--color-primary); }
+.notes-heading {
+  font-family: var(--font-mono);
+  font-size: var(--fs-section);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text);
+  margin: 0 0 8px;
+}
+.notes-page .intro {
+  font-size: 13.5px;
+  color: var(--color-muted);
+  margin: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .note-list {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
-
 .note-item {
   padding: 14px 0;
   border-bottom: 1px solid var(--color-border);
 }
-.note-item:last-child { border-bottom: none; }
-// Each note has an English and a Chinese entry, English first, and only one
-// language shows. The last English entry is therefore second to last.
+// The footer's rule closes the list, so the last entry shown has none. Each
+// note has an English and a Chinese entry, English first, so the last
+// English entry is second to last.
+.note-item:last-child,
 .notes-page[data-lang="en"] .note-item[data-lang="en"]:nth-last-child(2) { border-bottom: none; }
-.section.notes-page { padding-bottom: 16px; }
+.section.notes-page { padding-bottom: 12px; }
 
 .note-date {
+  display: block;
+  margin-bottom: 4px;
   font-family: var(--font-mono);
   font-size: 11.5px;
-  color: var(--color-muted);
-  margin-right: 12px;
+  letter-spacing: 0.06em;
+  color: var(--color-muted-2);
 }
 
 .note-title {
   font-family: var(--font-serif);
   font-size: 16px;
   font-weight: 500;
+  line-height: 1.4;
   color: var(--color-text);
   border-bottom: none;
 }
@@ -45,6 +76,12 @@
 }
 
 // ---- Single note ----
+.note-page .note-meta {
+  color: var(--color-muted);
+  font-size: 13.5px;
+  font-family: var(--font-mono);
+  margin: -6px 0 22px;
+}
 .note-page .back-link {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -123,8 +160,6 @@ html[lang="en"] .note-body { line-height: 1.7; }
   margin-left: auto;
   margin-right: auto;
 }
-.section.notes-page > h2,
-.section.notes-page > .notes-head > h2 { margin-bottom: 22px; }
 
 // ---- Single note: top bar + language switch ----
 .note-topbar {
@@ -381,6 +416,9 @@ html[lang="zh"] .note-body h2, html[lang="zh"] .note-body h3 { font-weight: 600;
   .section.notes-page,
   .section.note-page { padding-top: 28px; }
 }
+@media (max-width: 560px) {
+  .notes-top { margin-bottom: 24px; }
+}
 
 // ---- Summary under the title ----
 .note-body .summary {
@@ -462,14 +500,13 @@ html[lang="en"] .note-body figcaption,
 html[lang="en"] .note-body figure.fig figcaption { text-align: left; hyphens: manual; }
 
 // ---- Notes list: English / Chinese switch ----
-.notes-head { position: relative; }
-.notes-head .notes-lang { position: absolute; right: 0; top: 0; }
 .notes-lang button {
   font-family: var(--font-mono);
   font-size: 12px;
+  letter-spacing: 0.08em;
   background: none;
   border: none;
-  padding: 2px 0 2px 12px;
+  padding: 2px 0;
   color: var(--color-primary);
   cursor: pointer;
 }
@@ -477,6 +514,7 @@ html[lang="en"] .note-body figure.fig figcaption { text-align: left; hyphens: ma
 // like a link.
 .notes-lang button[aria-pressed="true"] { color: var(--color-text); }
 .notes-lang button:not([aria-pressed="true"]):hover { text-decoration: underline; text-underline-offset: 3px; }
+.notes-lang-sep { margin: 0 8px; color: var(--color-muted-2); }
 .notes-page[data-lang="en"] [data-lang="zh"],
 .notes-page[data-lang="zh"] [data-lang="en"] { display: none; }
 
