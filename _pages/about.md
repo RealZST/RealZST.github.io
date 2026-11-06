@@ -8,7 +8,7 @@ bulletin:
     desc: >
       A control plane for your AI coding agents — see, secure, and manage every
       extension and config from one place.
-    url: https://github.com/RealZST/harnesskit
+    url: https://harness-kit.dev/
     mascot: claude
     gh_repo: RealZST/harnesskit
   - name: csconf-papers
